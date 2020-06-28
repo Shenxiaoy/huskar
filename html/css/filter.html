@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模糊</title>
+    <!-- 
+1、灰度 || grayscale ，值为0-1之间小数，也支持百分比；
+
+2、褐色 || sepla ，值为0-1之间的小数；
+
+3、饱和度 || saturate , 值为数字，值越大越鲜明；
+
+4、亮度 || brightness , 值为数字，值越大越鲜明；
+
+5、对比度 || contrast ， 值为数字，值越大越鲜明；
+
+6、模糊 || blur，单位px， 值越大，模糊越严重；
+
+7、hue-rotate || 色相旋转，单位deg，随着值不断的变化，图像色值也是不断的变化；
+
+8、invert || 反色 ， 值为0-1之间的小数；效果类似 x光照效果；
+
+9、阴影 || drop-shadow ，（x, y , z, color），x表示阴影水平偏移的单位，y代表阴影垂直偏移单位，
+z 表示模糊度（如果z 小于x/y，那么对应的阴影对边将不会显现），color表示偏移的颜色
+
+10、透明度 || opacity 透明度 0-1之间
+
+```
+.box{
+  grayscale(1); // 照片渲染为无色彩；
+  blur(5px);  // 整个元素模糊处理；
+  ...
+}
+```
+
+> filter 还包括 支持url等特性，
+     -->
+    <style>
+        .box {
+            max-width: 200px;
+            height: 150px;
+            background: seagreen;
+            background-image: url("../img/person/276.jpg");
+            background-size: contain;
+            background-repeat: no-repeat;
+            color: slateblue;
+        }
+        .box1:hover {
+            filter: blur(3px);
+            cursor: pointer;
+        }
+        .box2:hover {
+            filter: grayscale(1);
+            cursor: pointer;
+
+        }
+        .box3:hover {
+            filter: sepia(1);
+            cursor: pointer;
+        }
+        .box4:hover {
+            filter: saturate(2);
+            cursor: all-scroll;
+        }
+        .box5:hover {
+            filter: brightness(.8);
+            cursor: zoom-in;
+        }
+        .box6:hover {
+            filter: contrast(2);
+            cursor: zoom-in;
+        }
+        .box7:hover {
+            filter: drop-shadow(2px 2px 1px red);
+            cursor: sw-resize;
+        }
+        .box8:hover {
+            filter: opacity(.1);
+            cursor: sw-resize;
+        }
+        .box9:hover {
+            filter: invert(1);
+            cursor: sw-resize;
+        }
+        .box10:hover {
+            filter: hue-rotate(240deg);
+            cursor: sw-resize;
+        }
+    </style>
+</head>
+<body>
+<h4>滑动展示效果</h4>
+<p>模糊</p>
+<div class="box box1">你的模样</div>
+<br>
+<p>灰度</p>
+<div class="box box2">你的模样</div>
+<br>
+<p>褐色（复古旧调）</p>
+<div class="box box3">你的模样</div>
+<br>
+<p>饱和度</p>
+<div class="box box4">你的模样</div>
+<br>
+<p>亮度</p>
+<div class="box box5">你的模样</div>
+<br>
+<p>对比度</p>
+<div class="box box6">你的模样</div>
+<br>
+<p>阴影</p>
+<div class="box box7">你的模样</div>
+<br>
+<p>透明度</p>
+<div class="box box8">你的模样</div>
+<br>
+<p>反色</p>
+<div class="box box9">你的模样</div>
+<br>
+<p>色调旋转</p>
+<div class="box box10">你的模样</div>
+<br>
+</body>
+</html>

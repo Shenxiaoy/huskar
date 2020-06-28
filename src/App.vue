@@ -12,6 +12,11 @@ export default {
   name: 'App',
   components: {
     HelloWorld
+  },
+  methods: {
+    addok () {
+
+    }
   }
 }
 </script>

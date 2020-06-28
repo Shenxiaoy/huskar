@@ -1,14 +1,15 @@
 module.exports = {
   title: '鹤山市',
-  description: '山东省立方',
+  description: 'rua rua ooo',
   themeConfig: {
     nav: [
-      {text: 'guide', link: '/guide/'}
+      {text: 'guide', link: '/guide/'},
+      {text: 'js关联', link: '/hjs/'}
     ],
     sidebar: {
       '/guide/': [
         {
-          title: '想到',
+          title: 'gome-ui',
           collapsable: false,
           children: [
             {
@@ -16,7 +17,7 @@ module.exports = {
               path: '/guide/'
             },
             {
-              title: 'one1',
+              title: '特色1',
               path: 'one'
             },
             {
@@ -32,6 +33,40 @@ module.exports = {
         {
           title: '测试1',
           collapsable: false
+        }
+      ],
+      '/hjs/': [
+        {
+          title: '基础',
+          collapsable: false,
+          children: [
+            {
+              title: '常用js-api',
+              path: '/hjs/'
+            },
+            {
+              title: '数组方法',
+              path: '/hjs/basic/array'
+            },
+            {
+              title: '字符串方法',
+              path: '/hjs/basic/string'
+            },
+            {
+              title: '深入理解',
+              path: '/hjs/basic/depapi'
+            }
+          ]
+        },
+        {
+          title: '随记',
+          collapsable: false,
+          children: [
+            {
+              title: '工作笔记',
+              path: '/hjs/notes/'
+            }
+          ]
         }
       ]
     }
