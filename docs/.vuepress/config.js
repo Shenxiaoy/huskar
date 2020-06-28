@@ -1,6 +1,7 @@
 module.exports = {
   title: '鹤山市',
   description: 'rua rua ooo',
+  base: '/doc/',
   themeConfig: {
     nav: [
       {text: 'guide', link: '/guide/'},
