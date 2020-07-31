@@ -84,3 +84,86 @@ var quickSort = function(arr) {
 　　return quickSort(left).concat([pivot], quickSort(right));
 };
 ```
+
+### 二叉树 二叉搜索树
+二叉搜索树特点：
+- 若任意节点的左子树不空，则左子树上所有节点的值均小于它的根节点的值；
+- 若任意节点的右子树不空，则右子树上所有节点的值均大于它的根节点的值;
+- 任意节点的左、右子树也需要满足左边小右边大的性质;
+
+```js
+class BinaryTreeNode {
+  constructor(key, value) {
+    // 指向父节点
+    this.p = null;
+    // 左节点
+    this.left = null;
+    // 右节点
+    this.right = null;
+    // 键
+    this.key = key;
+    // 值
+    this.value = value;
+  }
+}
+class BinaryTree {
+  constructor() {
+    this.root = null;
+  }
+  static createNode(key, value) {
+    return new BinaryTreeNode(key, value);
+  }
+  search(key) {
+    let p = this.root;
+    if (!p) {
+      return;
+    }
+    while (p && p.key !== key) {
+      if (p.key < key) {
+        p = p.right;
+      } else {
+        p = p.left;
+      }
+    }
+    return p;
+  }
+  // 插入
+  insert(node) {
+    // 尾指针的父节点指针
+    let p = this.root;
+    // 尾指针
+    let tail = this.root;
+    while (tail) {
+      p = tail;
+      if (node.key < tail.key) {
+        tail = tail.left;
+      } else {
+        tail = tail.right;
+      }
+    }
+    if (!p) {
+      this.root = node;
+      return;
+    }
+    // 插入
+    if (p.key < node.key) {
+      p.right = node;
+    } else {
+      p.left = node;
+    }
+    node.p = p;
+  }
+  transverse() {
+    return this.__transverse(this.root);
+  }
+
+  *__transverse(node) {
+    if (!node) {
+      return;
+    }
+    yield* this.__transverse(node.left);
+    yield node;
+    yield* this.__transverse(node.right);
+  }
+}
+```
