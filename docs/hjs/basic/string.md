@@ -125,3 +125,16 @@ text-transform: uppercase  // 全部大写
 text-transform:  lowercase  // 全部小写
 text-transform:  capitalize // 单次以大写开头
  ```
+
+ ### search
+ 查询指定字符串对应的下标，参数可以是字符串，可以是一个正则关系。
+ ```js
+const str = 'ningjianixia'
+const result = str.search(/nixi/)
+result: // 7
+ ```
+
+ ### split(str, num)
+ 把字符串按照 [str] 进行切割成多个字符串，保存到一个数组中返回，[num] 表示返回数组多少项；
+ 
+

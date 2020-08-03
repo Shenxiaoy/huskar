@@ -1,7 +1,7 @@
 
 ## grid
 
-###### exam:
+exam:
 ```
 display: grid;
 grid-template-columns: 30px 30px 30px;
@@ -14,7 +14,7 @@ grid-template-rows: 30px 30px 30px;
 - grid-template-rows: 定义每一行的宽度；
 
 ##### repeat() 定义重复的值；
-```
+```css
 .container {
   display: grid;
   grid-template-coumns: repeat(3, 33.3%);
@@ -26,7 +26,7 @@ grid-template-columns: repeat(2, 100px 20px 80px);
 ```
 
 ##### auto-fill 自动填充
-```
+```css
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fill, 100px);
@@ -54,7 +54,7 @@ grid-template-columns: repeat(2, 100px 20px 80px);
 
 #### 定义网格线的名称
 通过方括号去名称定义
-```
+```css
 .container {
   display: grid;
   grid-template-columns: [c1] 100px [c2] 100px [c3] auto [c4];
@@ -65,7 +65,7 @@ grid-template-columns: repeat(2, 100px 20px 80px);
 #### grid-template-areas 指定区域，定义单元格的名称
 
 - 
-```
+```css
 .container {
   display: grid;
   grid-template-columns: 100px 100px 100px;
@@ -98,7 +98,7 @@ grid-template-areas: 'a . c'
 #### justify-items 设置单元格内容的水平对齐方式
 #### align-items: 设置单元格内容的垂直对齐方式
 #### place-items 是 justify-item 和 align-items 的简写方式
-```
+```css
 .container {
   justify-items: start | end | center | stretch;
   align-items: start | end | center | stretch;
@@ -112,7 +112,7 @@ grid-template-areas: 'a . c'
 #### justify-content 整个容器内容区域的水平对齐方式
 #### align-content 整个容器内容区域的垂直对齐方式
 #### place-content 是容器内容区域对齐简写方式
-```
+```css
 .container {
   justify-content: start | end | center | stretch | space-around | space-between | space-evenly;
   align-content: start | end | center | stretch | space-around | space-between | space-evenly;  
@@ -139,7 +139,7 @@ grid-column-end: 5, 那么最终会形成4列5条网格纵线。
 > 如果第二列gird-column-start 大于等于总网格线，就会并到第一列；
 
 ##### 指定网格线的名称
-```
+```css
 .item-1 {
   grid-column-start: header-start;
   grid-column-end: header-end;
@@ -147,7 +147,7 @@ grid-column-end: 5, 那么最终会形成4列5条网格纵线。
 ```
 
 ##### 使用 span（移动） 关键字设置项目内容跨越几个单元格；
-```
+```css
 // 表示 左边框距离右边框跨越2个网格
 .item-1 {
   grid-column-start: span 2;
@@ -169,7 +169,7 @@ grid-column-end: 5, 那么最终会形成4列5条网格纵线。
 ```
 
 #### grid-area 指定项目放在哪个区域下面；
-```
+```css
 .item-1 {
   grid-area: e;
 }
@@ -179,7 +179,7 @@ grid-column-end: 5, 那么最终会形成4列5条网格纵线。
 #### align-self: 设置单元格垂直对齐方式；
 #### place-self: 是以上两种方式的简写；
 
-``
+```css
 .item {
   justify-self: start | end | center | stretch;
   align-self: start | end | center | stretch;

@@ -23,8 +23,8 @@ module.exports = {
             //   path: 'one'
             // },
             {
-              title: '测试1',
-              path: '/guide/test1/'
+              title: '性能优化',
+              path: '/guide/performance/'
             },
             {
               title: '周四',
@@ -102,10 +102,10 @@ module.exports = {
               title: '布局',
               path: '/hcss/basic/layout'
             },
-            // {
-            //   title: '字符串方法',
-            //   path: '/hcss/basic/string'
-            // },
+            {
+              title: 'grid布局',
+              path: '/hcss/grid/'
+            },
             // {
             //   title: '深入理解',
             //   path: '/hcss/basic/depapi'
