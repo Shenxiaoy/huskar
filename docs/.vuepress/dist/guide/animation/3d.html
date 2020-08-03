@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>3d动画 | 笔记┉▓</title>
+    <meta name="generator" content="VuePress 1.5.2">
+    
+    <meta name="description" content="rua rua ooo">
+    <link rel="preload" href="/doc/assets/css/0.styles.97efef16.css" as="style"><link rel="preload" href="/doc/assets/js/app.1786c276.js" as="script"><link rel="preload" href="/doc/assets/js/2.983a6954.js" as="script"><link rel="preload" href="/doc/assets/js/9.7fe59d8d.js" as="script"><link rel="prefetch" href="/doc/assets/js/10.7bf84da1.js"><link rel="prefetch" href="/doc/assets/js/11.21789933.js"><link rel="prefetch" href="/doc/assets/js/12.fdef0eb1.js"><link rel="prefetch" href="/doc/assets/js/13.ddbc74f6.js"><link rel="prefetch" href="/doc/assets/js/14.a4feca38.js"><link rel="prefetch" href="/doc/assets/js/15.92c09641.js"><link rel="prefetch" href="/doc/assets/js/16.788d7875.js"><link rel="prefetch" href="/doc/assets/js/17.15e0b0d5.js"><link rel="prefetch" href="/doc/assets/js/18.014ef559.js"><link rel="prefetch" href="/doc/assets/js/19.2e3fa230.js"><link rel="prefetch" href="/doc/assets/js/20.498cf0fd.js"><link rel="prefetch" href="/doc/assets/js/21.d6ac17f4.js"><link rel="prefetch" href="/doc/assets/js/22.ffc8a551.js"><link rel="prefetch" href="/doc/assets/js/23.b874b140.js"><link rel="prefetch" href="/doc/assets/js/24.bd5828e3.js"><link rel="prefetch" href="/doc/assets/js/25.a3bdecc8.js"><link rel="prefetch" href="/doc/assets/js/3.33e1d688.js"><link rel="prefetch" href="/doc/assets/js/4.5dbe644f.js"><link rel="prefetch" href="/doc/assets/js/5.a3cac816.js"><link rel="prefetch" href="/doc/assets/js/6.7936f3f2.js"><link rel="prefetch" href="/doc/assets/js/7.1832aa5e.js"><link rel="prefetch" href="/doc/assets/js/8.dff6e169.js">
+    <link rel="stylesheet" href="/doc/assets/css/0.styles.97efef16.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/doc/" class="home-link router-link-active"><!----> <span class="site-name">笔记┉▓</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/doc/guide/" class="nav-link router-link-active">
+  guide
+</a></div><div class="nav-item"><a href="/doc/hjs/" class="nav-link">
+  js关联
+</a></div><div class="nav-item"><a href="/doc/hcss/" class="nav-link">
+  css关联
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/doc/guide/" class="nav-link router-link-active">
+  guide
+</a></div><div class="nav-item"><a href="/doc/hjs/" class="nav-link">
+  js关联
+</a></div><div class="nav-item"><a href="/doc/hcss/" class="nav-link">
+  css关联
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>huskar</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/doc/guide/" aria-current="page" class="sidebar-link">介绍</a></li><li><a href="/doc/guide/performance/" class="sidebar-link">性能优化</a></li><li><a href="/doc/guide/one.html" class="sidebar-link">周四</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>动画</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/doc/guide/animation/3d.html" aria-current="page" class="active sidebar-link">3d动画</a><ul class="sidebar-sub-headers"></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="_3d动画"><a href="#_3d动画" class="header-anchor">#</a> 3d动画</h1> <h3 id="卡片旋转木马"><a href="#卡片旋转木马" class="header-anchor">#</a> 卡片旋转木马</h3> <p>通过设置 景深属性 <code>perspective</code>、3d渲染<code>preseve-3d</code>、z轴投影成图<code>translateZ()</code>、旋转变形<code>rotateY()</code>去实现一个简单的木马旋转特效。</p> <blockquote><p>大概原理成像是 通过perspective 设置视角远近，translateZ 设置目标与成像屏幕的距离移动，最终投影成像为屏幕显示的大小形状。</p></blockquote> <p><a href="/doc/html/css/animation/3d/cards-rotate.html">exam</a></p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/doc/guide/one.html" class="prev">
+        周四
+      </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/doc/assets/js/app.1786c276.js" defer></script><script src="/doc/assets/js/2.983a6954.js" defer></script><script src="/doc/assets/js/9.7fe59d8d.js" defer></script>
+  </body>
+</html>
