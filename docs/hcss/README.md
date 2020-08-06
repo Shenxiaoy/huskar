@@ -1,6 +1,6 @@
 # css 基础
 
-## user-select 禁用选择文本
+### user-select 禁用选择文本
 ```css
 #user-select {
   user-select: none;
@@ -8,12 +8,12 @@
 }
 ```
 
-## rgba 和 hsla 的区别
+### rgba 和 hsla 的区别
 > 在CSS3里可以使用RGBA和HSLA两种色彩模式，都可以用来在设置颜色的同时也可以设置它的透明度。RGBA指的是“红色、绿色、蓝色和Alpha透明度”（Red-Green-Blue-Alpha），而HSLA则代表“色调、饱和度、亮度和Alpha透明度”（Hue-Saturation-Lightness-Alpha）。 
 
 > 在RGBA模式里，前三个参数分别是红色、绿色和蓝色的强度值，取值从0~255或0%-100%。而在HSLA模式里，前三个参数则分别代表色调（0-360）、饱和度（0%-100%）和亮度（0%-100%）。透明度的取值从0（完全透明）到1（完全不透明）
 
-## text-overflow 文本省略号
+## 文本省略号
 - clip： 不显示省略文本，简单裁切；
 - ellipsis： 表示对象文本溢出时显示省略标记，省略标记插入的位置是最后一个字符；
 - ellipsis-word： 表示当对象文本溢出时显示省略标记，省略标记插入的位置是最后一个词（word）。
@@ -38,12 +38,12 @@
 }
 ```
 
-## white-space 不换行属性
+### white-space 不换行属性
 - nowrap: 不换行，直到遇到<br>标签；
 - pre： 类似pre标签，空白会被保留；
 - ……
 
-## word-break 换行属性
+### word-break 换行属性
 - break-all: 强制英文单词断行;
 - break-wor：自动换行
 
@@ -287,4 +287,92 @@ html {
 ### box-decoration-break 处理box盒子断开时候的渲染表现
 ```css
 box-decoration-break: clone;   // 表示断开的各个盒子样式独自渲染
+```
+
+## 背景
+- background-color
+- background-image
+- background-repeat
+- background-position
+- background-attachment
+- background-origin
+- background-clip
+- background-size
+
+### 多重背景图片
+```css
+style{
+.div1{
+    margin:50px auto;
+    width:700px;
+    height:450px;
+    border:10px dashed #ff00ff;
+    background-image:url(images/1.jpg),url(images/2.jpg),url(images/3.jpg),url(images/4.jpg),url(images/5.jpg);
+    background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,no-repeat;
+    background-position:top left,top right,bottom left,bottom right,center center;
+    }
+}
+<div class="div1">
+<a href="#" title="background">background</a>
+</div>
+```
+
+### background-origin  用于决定背景图片定位于哪个盒子
+1) content-box
+2) padding-box
+3) border-box
+
+### background-repeat  设置图片是否平铺，和平铺的效果
+1) repeat-x　　repeat-y　　repeat　　no-repeat   这一行值， 只能设置一个。
+2) round(图片两端对齐， 但其多出来空间通过自身的拉伸来填充)　　space( 图片两端平铺，多出来的空间空白代替)　　这一行值，可以设置一个 或 两个   第一个值代表横向， 第二个值代表 纵向。  如果只设置了一个值，那么这个值会 应用于 横向 和 纵向
+3) 默认值是：repeat  表示在 横向， 和纵向 都平铺
+
+### background-position 背景图片的位置
+根据容器来定位 图片的位置。  默认值是：0%  0% ，  第一个值设置 left  第二个值设置 top。 如果只设置一个值， 第二个值默认是 center。
+
+可以接受 定位 第二张图片， 第三张图片的写法， 只需要加个 ，号    例如 ：  background-position: 0  0 , 10px 10px
+
+### background-attachment
+- scroll: 背景图相对于元素固定，背景随页面滚动而移动，即背景和内容绑定,可以理解为fixed效果。
+- local: 背景图相对于内容固定，当元素内的内容滚动时，背景也会滚动；（overflow: 'scroll'）
+- fixed：背景图相对于视图固定, 所以随页面滚动背景不动，相当于背景被设置在了body上，当元素滚动完，元素的背景图片也就消失了；
+
+### background-clip 背景区域中背景图片裁切的位置
+1) content-box
+2) padding-box
+3) border-box
+4) text： 只有webkit内核的浏览器可以使用。 搭配  text-fill-color(也只有webkit内核的浏览器有)  使用 [exam](/html/css/background/background-clip.html)
+
+### backround-size 控制图片的大小尺寸
+- cover ： 将背景图片等比例缩放到完全覆盖容器大小，有可能背景图片大小会超出容器
+- contain：会以最佳比例平铺，因为比例问题但会留有空白背景；
+
+### text-shadow 文字阴影
+```css
+text-shadow : x y blur  color
+/* x轴偏移  y轴偏移  模糊度  颜色
+多层阴影制作文字立体效果 ,设置多种颜色,中间以逗号隔开 */
+
+/* 单阴影 */
+text-shadow: 3px 1px 3px red;
+/* 设置多个文字阴影，在逗号后面追加设置参数就行； */
+text-shadow: 3px 1px 3px red, -3px -1px 3px blue;
+```
+
+### 文字描边
+```css
+/* 文字添加边框 */
+     text-stroke: 2px blue
+    /* 通过设定1px的透明边框，可以让文字变得平滑
+    颜色设成透明能创建镂空字体 */
+
+/* 镂空描边，把字体颜色设为背景颜色；如果背景是图片，设置color为透明 */
+-webkit-text-stroke: 1px red;
+color: white;
+/* 背景为图片 */
+webkit-text-stroke: 1px red;
+color: transparent;
+/* 背景剪切 用到-webkit-background-clip: text; */
+-webkit-background-clip: text;
+color: transparent;
 ```

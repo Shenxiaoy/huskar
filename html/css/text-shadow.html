@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>文字阴影 text-shadow 描边 text-strock</title>
+    <style type="text/css">
+        .fire {
+            font-size: 40px;
+            font-weight: bold;
+            background: #000;
+            text-align: center;
+            padding: 24px;
+            text-shadow: 0 0 4px white,
+            0 -5px 4px #ff3,
+            3px -10px 6px #fd3,
+            -3px -15px 11px #C90,
+            3px -25px 18px #f20;
+            /* 4px -35px 28px #C30;*/
+        }
+
+        .threeD {
+            color: #fff;
+            text-shadow: 0 0 1px #999,
+                1px 1px 2px #888,
+                2px 2px 2px #777,
+                3px 3px 2px #666,
+                4px 4px 2px #555,
+                5px 5px 2px #333;
+        }
+
+        /*背景为图片字体镂空*/
+        .stroke1 {
+            width: 200px;
+            height: 100px;
+            background: url("../img/person/person-3.jpg") no-repeat center;
+            background-size: cover;
+            font-family: 方正姚体;
+            -webkit-text-stroke: 1px black;
+            font-size: 40px;
+            color: transparent;
+        }
+
+        .stroke {
+            width: 200px;
+            height: 100px;
+            font-family: 方正姚体;
+            -webkit-text-stroke: 1px red;
+            font-size: 40px;
+            color: white;
+        }
+
+        .clip-text {
+            font-size: 50px;
+            font-weight: bold;
+            width: 400px;
+            height: 200px;
+            background: url("../img/person/person-6.jpg") no-repeat center center;
+            -webkit-background-clip: text;
+            background-size: cover;
+            color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <p class="pubsty fire">淡然</p>
+        <p class="pubsty threeD">淡然</p>
+        <p class="stroke1">一枝花墨</p>
+        <p class="stroke">一枝花墨</p>
+        <p class="clip-text">我饿GV是</p>
+    </div>
+</body>
+
+</html>
