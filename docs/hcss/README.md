@@ -376,3 +376,29 @@ color: transparent;
 -webkit-background-clip: text;
 color: transparent;
 ```
+
+## html5中的拖拽功能
+拖拽元素支持的事件
+- ondrag 应用于拖拽元素，整个拖拽过程都会调用
+- ondragstart 应用于拖拽元素，当拖拽开始时调用
+- ondragleave 应用于拖拽元素，当鼠标离开拖拽元素是调用
+- ondragend 应用于拖拽元素，当拖拽结束时调用
+
+目标元素支持的事件
+- ondragenter 应用于目标元素，当拖拽元素进入时调用
+- ondragover 应用于目标元素，当停留在目标元素上时调用
+- ondrop 应用于目标元素，当在目标元素上松开鼠标时调用
+- ondragleave 应用于目标元素，当鼠标离开目标元素时调用
+
+浏览器默认会阻止ondrop事件：我们必须在ondrapover中阻止默认行为, 添加 <code>e.preventDefault()</code>
+
+可以通过setDragImage 方法设置拖放图标
+```js
+dataTransfer.setDragImage(img, xOffset, yOffset)
+```
+  1) img 为element元素
+  2) xOffset 、 yOffset 为位置偏移量
+
+
+
+

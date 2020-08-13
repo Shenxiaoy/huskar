@@ -12,7 +12,40 @@
 2) 公共组件、功能抽离；
 
 ### css 性能优化
-1) 懒加载 css，优先加载关键css;
+1) 懒加载 css，优先加载关键css; 
 2) 导入通配css文件，减少重复css样式定义；
 3) 减少@import的使用；
 4) js依赖的css放到前面解析；不依赖css，js靠前解析；
+
+## 获取目录上下文
+### 通过webpack中 <code>require.context</code> API 获取目录上下文
+- 入参
+  1. 你要引入文件的目录
+  2. 是否要查找该目录下的子级目录
+  3. 匹配要引入的文件
+
+- 返回的是一个函数，函数有三个属性：resolve 、keys、id
+  1. resolve: 是一个函数，他返回的是被解析模块的id
+  2. keys: 也是一个函数，他返回的是一个数组，该数组是由所有可能被上下文模块解析的请求对象组成
+  3. id：上下文模块的id
+
+### 动态获取子路由集合:
+```js
+export const exam_childrenRoute = []
+const requireComponent = require.context(
+  './pages/collect-exam/module',
+  false,
+  /\w+\.(vue)$/
+)
+requireComponent.keys().forEach(fileName => {
+  const componentConfig = requireComponent(fileName)
+  // `./pages/collect-exam/module/${componentConfig.default.name}`
+  exam_childrenRoute.push({
+    path: componentConfig.default.name,
+    name: componentConfig.default.name,
+    component: componentConfig.default || componentConfig
+  })
+})
+```
+
+

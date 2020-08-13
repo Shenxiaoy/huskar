@@ -4,6 +4,7 @@ import test from '../pages/rect'
 
 Vue.use(VueRouter)
 const routes = [
+  {path: '/', redirect: '/test1'},
   {path: '/test1', component: test}
 ]
 
