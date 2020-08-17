@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #box1 {
+      width: 100px;
+      height: 100px;
+      background-color: rgba(233,33,44, .1);
+    }
+    #box2 {
+      width: 400px;
+      height: 400px;
+      background-color: rgb(219, 198, 240);
+    }
+    .image1 {
+      width: 10px;
+      height: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <div id="box1" draggable="true"></div>
+    <div id="box2"></div>
+    <img src="./sdman.png" id='img' width='20' height='20' alt="">
+  </div>
+  <script>
+    const box1 = document.getElementById('box1')
+    const box2 = document.getElementById('box2')
+    const box3 = document.getElementById('img')
+    box3.addEventListener('click', function (ev) {
+      // document.replaceChild(document.getElementById('box1'), document.getElementById('box2'))
+      box2.parentNode.removeChild(box2)
+    })
+    box1.addEventListener('dragstart', function(ev) {
+      // ev.dataTransfer.effectAllowed = 'copy'
+      ev.dataTransfer.setData('text', ev.target.id)
+      const div = document.createElement('div')
+      const img = new Image()
+      img.src = './sdman.png'
+      div.style.width = '20px'
+      div.style.height = '20px'
+      div.style.overflow = 'hidden'
+      div.appendChild(img)
+      ev.dataTransfer.setDragImage(document.getElementById('box1'), 5, 5)
+    })
+    box2.addEventListener('dragover', function (ev) {
+      ev.preventDefault()
+    })
+    box2.addEventListener('drop', function (ev) {
+      const data = ev.dataTransfer.getData('text')
+      this.appendChild(document.getElementById(data))
+      ev.preventDefault()
+      
+    })
+  </script>
+</body>
+</html>

@@ -127,7 +127,7 @@ grid-template-areas: 'a . c'
 > grid-template属性是grid-template-columns、grid-template-rows和grid-template-areas这三个属性的合并简写形式。
 > grid属性是grid-template-rows、grid-template-columns、grid-template-areas、 grid-auto-rows、grid-auto-columns、grid-auto-flow这六个属性的合并简写形式。
 
-## 项目属性
+### 项目属性
 
 #### grid-column-start属性：左边框所在的垂直网格线
 #### grid-column-end属性：右边框所在的垂直网格线

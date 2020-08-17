@@ -378,6 +378,8 @@ color: transparent;
 ```
 
 ## html5中的拖拽功能
+
+### drag api
 拖拽元素支持的事件
 - ondrag 应用于拖拽元素，整个拖拽过程都会调用
 - ondragstart 应用于拖拽元素，当拖拽开始时调用
@@ -392,13 +394,99 @@ color: transparent;
 
 浏览器默认会阻止ondrop事件：我们必须在ondrapover中阻止默认行为, 添加 <code>e.preventDefault()</code>
 
-可以通过setDragImage 方法设置拖放图标
+### 可以通过setDragImage 方法设置拖放图标
 ```js
 dataTransfer.setDragImage(img, xOffset, yOffset)
 ```
   1) img 为element元素
   2) xOffset 、 yOffset 为位置偏移量
 
+### dataTransfer对象
+它是事件对象的属性，所以只能在拖放事件的事件处理程序中访问dataTransfer对象在拖放过程中数据传递交换的集合；
 
+### getData()和setData()
+dataTransfer对象有 getData()和setData()两个主要方法，操作dataTransfer中携带的数据。不难想象，getData()可以取得由setData()保存的值。setData()方法的第一个参数，也是getDAta()方法唯一的一个参数，表示保存的数据类型。
+
+### 使用 effectAllowed 和 dropEffect 属性设置 拖放效果
+effectAllowed属性作用于被拖放元素；而 dropEffect 属性作用于目标元素。
+> 必须在ondraggstart事件处理程序中设置effectAllowed属性，dropEffect属性只有搭配effectAllowed属性才有用。effectAllowed属性表示允许拖放元素的哪种dropEffect。
+
+其中，通过dropEffect属性可以知道被拖动的元素能够执行哪种放置行为。这个属性有下列4个可能的值。
+- none：不能把拖动的元素放在这里。这是除文本框之外所有元素的默认值。
+- move：应该把拖动的元素移动到放置目标
+- copy：应该把拖动的元素复制到放置目标
+- link：表示放置目标会打开拖动的元素（但拖动的元素必须是一个链接，有URL）。
+
+effectAllowed属性可能的值如下：
+- uninitialized：没有该被拖动元素放置行为。
+- none：被拖动的元素不能有任何行为。
+- copy：只允许值为“copy”的dropEffect。
+- link：只允许值为“link”的dropEffect。
+- move：只允许值为“move”的dropEffect。
+- copyLink：允许值为“copy”和“link”的dropEffect。
+- copyMove：允许值为“copy”和”link”的dropEffect。
+- linkMove：允许职位“link”和”move”的dropEffect。
+- all：允许任意dropEffect。
+
+exam:
+```html
+    <div id="box1" draggable="true"></div>
+    <div id="box2"></div>
+```
+```js
+    const box1 = document.getElementById('box1')
+    const box2 = document.getElementById('box2')
+    box1.addEventListener('dragstart', function(ev) {
+      // ev.dataTransfer.effectAllowed = 'copy'
+      ev.dataTransfer.setData('text', ev.target.id)
+      const div = document.createElement('div')
+      const img = new Image()
+      img.src = './sdman.png'
+      div.style.width = '20px'
+      div.style.height = '20px'
+      div.style.overflow = 'hidden'
+      div.appendChild(img)
+      ev.dataTransfer.setDragImage(document.getElementById('box1'), 5, 5)
+    })
+    box2.addEventListener('dragover', function (ev) {
+      ev.preventDefault()
+    })
+    box2.addEventListener('drop', function (ev) {
+      const data = ev.dataTransfer.getData('text')
+      this.appendChild(document.getElementById(data))
+      ev.preventDefault()
+      
+    })
+```
+
+## 滤镜
+### filter -wekit-filter
+
+-webkit-filter: blur(2px);  高斯模糊
+
+-webkit-filter: normal;  正常
+
+-webkit-filter: grayscale(1);  灰度，取值范围0-1
+
+-webkit-filter: brightness(0. 亮度，取值范围0-1
+
+-webkit-filter: invert(1); 反色5); ，取值范围0-1, 0为原图，1为彻底反色之后
+
+-webkit-filter: sepia(0.5); 叠加褐色，取值范围0-1
+
+-webkit-filter: hue-rotate(30deg); 色相（按照色相环进行旋转，顺时针方向，红-橙-
+黄-黄绿-绿-蓝绿-蓝-蓝紫-紫-紫红-红）此处为叠加黄色滤镜
+
+-webkit-filter: saturate(4); 饱和度，取值范围0 ~ *, 0为无饱和度，1为原图，值越高饱
+和度越大
+
+-webkit-filter: contrast(2); 对比度，取值范围0 ~ *, 0为无对比度（灰色），1为原图，
+值越高对比度越大
+
+-webkit-filter: opacity(0.8); 透明度，取值范围0 ~ 1, 0为全透明，1为原图
+
+-webkit-filter: drop-shadow(0 0 20px red); 阴影
+
+[exam](http://shenxiaoyu.cn/basic/html/css/filter.html)
 
 

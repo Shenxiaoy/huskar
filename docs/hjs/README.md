@@ -322,3 +322,32 @@ m.delete(o) // true
 m.has(o) // false
 ```
 
+### DOM 节点的操作
+1) 创建元素节点
+```js
+const odiv  = document.createElement("div")
+```
+2) 插入追加一个节点,可以添加已经存在的元素，会将其元素从原来的位置移到新的位置
+```js
+document.body.appendChild(oDiv)
+```
+3) 插入节点，a节点会插入b节点的前面
+```js
+document.body.insertBefore(a, b)
+```
+4) 删除节点
+```js
+box.remove()
+// or
+ box2.parentNode.removeChild(box2)
+// 删除子节点
+var removeChild = box.removeChild(box.childNodes[0])
+```
+5) 替换节点
+```js
+
+// 子节点替换
+var replaceChild= document.body.replaceChild(div1,div2)
+```
+
+

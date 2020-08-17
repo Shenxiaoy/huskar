@@ -102,10 +102,10 @@ module.exports = {
               title: '布局',
               path: '/hcss/basic/layout'
             },
-            {
-              title: 'grid布局',
-              path: '/hcss/grid/'
-            },
+            // {
+            //   title: 'grid布局',
+            //   path: '/hcss/grid/'
+            // },
             // {
             //   title: '深入理解',
             //   path: '/hcss/basic/depapi'
