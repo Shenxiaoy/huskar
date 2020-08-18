@@ -27,7 +27,7 @@ module.exports = {
               path: '/guide/performance/'
             },
             {
-              title: '周四',
+              title: 'typescript',
               path: '/guide/one'
             }
           ]

@@ -1,26 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>背景裁切</title>
+  <title>背景文字裁切 || 图形路径裁切</title>
   <style>
     .box {
       width: 300px;
-      height: 400px;
-      background-color:cadetblue;
+      height: 200px;
+      background-color: cadetblue;
       background-image: url('./qqa.png');
-      background-repeat: no-repeat;
-      font-size: 40px;
-      line-height: 360px;
+      background-repeat: repeat;
+      font-size: 100px;
+      font-weight: bold;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
+    .box1 {
+      width: 200px;
+      height: 200px;
+      background: url('../../img/scenery/42.jpg');
+      background-size: cover;
+      border: 1px solid solid;
+      /* 矩形裁切 */
+      /* clip-path: inset(20px 20px 50px 40px round 4px); */
+      /* clip-path: circle( 50px at 10% 50%); */
+      clip-path: polygon(30px 30px, 100px 10px, 150px 60px, 120px 140px);
+      animation: morph 5s linear infinite alternate;
+    }
+
+    @keyframes morph {
+      0% {
+        clip-path: polygon(30px 30px, 100px 10px, 150px 60px, 120px 100px);
+      }
+
+      30% {
+        clip-path: polygon(30px 30px, 100px 10px, 150px 60px, 120px 140px);
+      }
+
+      80% {
+        clip-path: polygon(30px 30px, 190px 10px, 150px 180px, 50px 180px);
+      }
+      100% {
+        clip-path: polygon(30px 30px, 190px 10px, 150px 180px, 50px 180px);
+      }
+    }
+    .box2 {
+      width: 100px;
+      height: 100px;
+      background: rgb(141, 74, 185);
+      animation: inserts 3s infinite alternate;
+    }
+    @keyframes inserts {
+      25% {
+        width: 300px;
+        background-color: rosybrown;
+      }
+      50% {
+        width: 400px;
+        background-color: saddlebrown;
+      }
+      75% {
+        width: 600px;
+        background-color: skyblue;
+      }
+      100% {
+        width: 1000px;
+        background-color: orchid;
+      }
+    }
+
   </style>
 </head>
+
 <body>
+  <p>背景文字裁切</p>
   <div class="box">
     stock
   </div>
+  <br>
+  <br>
+  <p>clip-path 裁切</p>
+  <div class="box1"></div>
+  <!-- <div class="box2"></div> -->
 </body>
+
 </html>

@@ -490,3 +490,59 @@ exam:
 [exam](http://shenxiaoyu.cn/basic/html/css/filter.html)
 
 
+### clip-path 裁切裁剪
+> 参考[MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/clip-path)
+> 
+按矩形进行裁切
+```css
+/* 语法 */
+inset( <length-percentage>{1,4} [ round <border-radius> ]? )
+/* 说明 */
+inset()可以传入5个参数，分别对应top,right,bottom,left的裁剪位置,round radius（可选，圆角）
+/* 示例 */
+clip-path: inset(10px 20px 50px 40px round 4px);
+```
+
+定义圆裁切
+```css
+/* 语法 */
+circle( [ <shape-radius> ]? [ at <position> ]? )
+/* 说明 */
+circle()可以传人2个可选参数；
+1. 圆的半径，默认元素宽高中短的那个为直径，支持百分比
+2. 圆心位置，默认为元素中心点
+/* 半径公式 */
+如果半径使用百分比：圆的半径 = (sqrt(width^2+height^2)/sqrt(2)) * 百分比 
+
+/* 示例 */
+clip-path: circle(30% at 150px 120px);
+```
+
+定义椭圆裁切
+```css
+/* 语法 */
+ellipse( [ <shape-radius>{2} ]? [ at <position> ]? )
+/* 说明 */
+ellipse()可以传人3个可选参数；
+1. 椭圆的X轴半径，默认是宽度的一半，支持百分比
+2. 椭圆的Y轴半径，默认是高度的一半，支持百分比
+3. 椭圆中心位置，默认是元素的中心点
+
+/* 示例 */
+clip-path: ellipse(45% 30% at 50% 50%);
+```
+
+定义多边形裁切
+```css
+/* 语法 */
+polygon( <fill-rule>? , [ <length-percentage> <length-percentage> ]# )
+/* 说明 */
+<fill-rule>可选，表示填充规则用来确定该多边形的内部。可能的值有nonzero和evenodd,默认值是nonzero
+后面的每对参数表示多边形的顶点坐标（X,Y），也就是连接点
+
+/* 示例 */
+clip-path: polygon(50% 0,100% 50%,0 100%);
+```
+> 多边形裁切路径中，如果要实现动画渐变效果，需保证路径坐位数量一致。
+> 
+[exam](http://shenxiaoyu.cn/basic/html/css/background/background-clip.html)
