@@ -546,3 +546,27 @@ clip-path: polygon(50% 0,100% 50%,0 100%);
 > 多边形裁切路径中，如果要实现动画渐变效果，需保证路径坐位数量一致。
 > 
 [exam](http://shenxiaoyu.cn/basic/html/css/background/background-clip.html)
+
+## 3D 转换
+
+### perspective 景深效果
+> 景深成像，可以看做元素目标在屏幕的投影成像；好比目光看物体，视线通过物体延边在视图中的映射成像，就像物理中蜡烛成像一样。
+
+- 在设置景深的标签上设置宽高，会影响到景深效果, 因为成像视角改变， 包括成像的位置和形状都会发生不同程度的变化。一般通过设置<code>perspextive-origin</code>去调整查看的视角，设置宽高去调整视角，不好控制。
+- <code>perspextive-origin</code> 有两个值，值可为方向 left、top、right、bottom 或者 % ；
+- 近大远小的效果 ，一般放在父级标签上，获得更好的3d效果（也可以放到变形元素上，展示效果将不同），只影响3d转换元素。
+```css
+    .area {
+      perspective: 1200px;
+      perspective-origin: left top;
+    }
+```
+
+### rotate3d 旋转
+rotate3d（x,y,z,deg）属性，由原点指向(x,y,z)成方向轴，进行旋转指定的角度。
+
+#### 3d旋转，星系轨道环绕旋转
+> 对容器元素进行 x、y轴旋转得到类椭圆星系形状；对环绕运动的球体，通过定义旋转基点（transform-origin）得到不同位置的球体，并调整rotate3d 值，得到理想球体形状；在容器animation rotateZ进行周期旋转，为保证球体旋转时旋转角度的不变，球体自身提交旋转animation，旋转角度与容器旋转抵消，保证球体旋转的过程中大小保持不变。
+
+[exam](http://shenxiaoyu.cn/basic/html/css/animation/3d/rotate3d/index.html)
+

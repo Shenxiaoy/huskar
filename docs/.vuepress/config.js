@@ -27,8 +27,8 @@ module.exports = {
               path: '/guide/performance/'
             },
             {
-              title: 'typescript',
-              path: '/guide/one'
+              title: 'node应用',
+              path: '/guide/node/'
             }
           ]
         },
