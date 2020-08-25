@@ -167,3 +167,85 @@ class BinaryTree {
   }
 }
 ```
+## 链表
+### 反转链表
+```js
+//迭代写法
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+var reverseList = function(head){
+    if(head == null || head.next == null){return head;}
+    let pre = head;
+    let temp = null;
+    let cur = head.next
+    while(cur != null){
+        temp = cur.next;
+        pre.next = cur.next;
+        cur.next = head;
+        head = cur;
+        cur = temp;
+        //[head, cur] = [cur, temp]; //解构赋值写法
+    }
+    return head；
+}
+```
+
+### 合并两个排序的链表
+输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是递增排序的
+
+```js
+//迭代写法
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+var mergeTwoList = function(l1, l2){
+ 	if(!l1){return l2;}
+    if(!l2){return l1;}
+    let temp = new ListNode();
+    let head = temp;  //保存头节点
+    while(l1 && l2){
+        if(l1.val < l2.val){
+            temp.next = l1;
+            l1 = l1.next;
+        }else{
+            temp.next = l2;
+            l2 = l2.next;
+        }
+        temp = temp.next;
+    }
+    //当l1或l2为空时，跳出while循环，并将不为空的链表添加到temp.next
+    if(!l1){temp.next = l2;}
+    if(!l2){temp.next = l1;}
+    return head.next;  //由于head头节点没有值，因此是返回head.next
+}
+
+//递归写法
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+var mergeTwoList = function(l1, l2){
+	if(!l1){return l2;}
+    if(!l2){return l1;}
+    if(l1.val < l2.val){
+        l1.next = mergeTwoList(l1.next, l2);
+        return l1;
+    }else{
+        l2.next = mergeTwoList(l1, l2.next);
+        return l2;
+    }
+}
+```
+

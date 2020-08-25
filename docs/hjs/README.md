@@ -350,4 +350,21 @@ var removeChild = box.removeChild(box.childNodes[0])
 var replaceChild= document.body.replaceChild(div1,div2)
 ```
 
+## 事件捕获和冒泡
+> 事件捕获：当某个元素触发某个事件（如onclick），顶层对象document就会发出一个事件流，随着DOM树的节点向目标元素节点流去，直到到达事件真正发生的目标元素。在这个过程中，事件相应的监听函数是不会被触发的。
 
+> 事件目标：当到达目标元素之后，执行目标元素该事件相应的处理函数。如果没有绑定监听函数，那就不执行。
+
+> 从目标元素开始，往顶层元素传播。途中如果有节点绑定了相应的事件处理函数，这些函数都会被一次触发。
+
+#### 通过 ev.stopPropagation 阻止事件的冒泡
+
+#### event. preventDefault() 阻止元素默认的行为，如链接的跳转、表单的提交；
+
+#### addEventListener 第三个参数，true：事件捕获， false：事件冒泡，默认 false；如果为true，按照从外到内的顺序进行事件的触发，false则是从内往外进行事件的触发。
+
+### event 对象常用的属性、方法
+- x/y与clientX/clientY值一样，表示距浏览器可视区域（工具栏除外区域）左/上的距离；
+- pageX/pageY，距页面左/上的距离，它与clientX/clientY的区别是不随滚动条的位置变化；
+- screenX/screenY，距计算机显示器左/上的距离，拖动你的浏览器窗口位置可以看到变化；
+- layerX/layerY与offsetX/offsetY值一样，表示距有定位属性的父元素左/上的距离。
