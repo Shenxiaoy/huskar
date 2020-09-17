@@ -29,6 +29,10 @@ module.exports = {
             {
               title: 'node应用',
               path: '/guide/node/'
+            },
+            {
+              title: 'interview',
+              path: '/guide/interview/basic'
             }
           ]
         },
@@ -39,6 +43,16 @@ module.exports = {
             {
               title: '3d动画',
               path: '/guide/animation/3d'
+            }
+          ]
+        },
+        {
+          title: '服务端',
+          collapsable: false,
+          children: [
+            {
+              title: 'nginx',
+              path: '/guide/server/nginx'
             }
           ]
         }
