@@ -1,21 +1,227 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <div><button id='cfpl'>test</button></div>
-  <div>
-    <p title="坎坎坷坷"><span>撒大声地</span></p>
-  </div>
-  <script>
-    const box = document.getElementById('cfpl')
-    box.dispatchEvent(new CustomEvent('log-in'), {detail: 'hello'})
-    box.addEventListener('log-in', (ev) => {
-      console.log(ev.detail, 'nnnn')
-    })
-  </script>
-</body>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <style type="text/css">
+            *{margin: 0;padding: 0;}
+            #wrap {
+                position: relative;
+            }
+            #wrap div {
+                width: 100px;
+                height: 100px;
+                float: left;
+                border-radius: 10px;
+                text-align: center;
+                line-height: 100px;
+                font-size: 50px;
+                position: absolute;
+            }
+            #ccc{
+                width: 350px;
+                height: 250px;
+                border: 2px solid #ccc;
+            }
+            #xx{
+                width: 350px;
+                height: 30px;
+                border: 2px solid #ccc;
+            }
+            p{
+                font-size: 14px;
+                line-height: 30px;
+                color: dodgerblue;
+                margin-left: 290px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="xx">
+            <p>随机排序</p>
+        </div>
+        <div id ="ccc">
+        <div id="wrap"></div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        let wrap = document.getElementById("wrap")
+        let ml = 10;
+        let mt = 10;
+        for (var i = 0; i < 2; i++) {
+            for (var j = 0; j < 3; j++) {
+                var div = document.createElement('div');
+                wrap.appendChild(div)
+                div.style.top = i * (div.offsetHeight + mt) + "px"
+                div.style.left = j * (div.offsetWidth + ml) + "px"
+
+                div.style.background = "rgb(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," +
+                    Math.floor(Math.random() * 256) + ")"
+            }
+        }
+        var txt = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
+        var items = wrap.children;
+        for (var i = 0; i < items.length; i++) {
+            items[i].innerHTML = txt[i]
+        }
+        for (var i = 0; i < items.length; i++) {
+            items[i].onmousedown = function(e) {
+                var evt = e || event;
+                var offsetX = evt.offsetX;
+                var offsetY = evt.offsetY;
+                var drag = this;
+                var cloneNode = drag.cloneNode();
+                wrap.appendChild(cloneNode)
+                wrap.appendChild(drag)
+                drag.style.zIndex = 1; 
+                document.onmousemove = function(e) {
+                    var evt = e || event;
+                    var left = evt.clientX - offsetX;
+                    var top = evt.clientY - offsetY;
+                    drag.style.top = top + "px";
+                    drag.style.left = left + "px";
+                }
+                
+                document.onmouseup = function() {
+                  console.log(drag.offsetLeft, drag.offsetTop)
+                    var disarr = []
+                    var newarr = []
+                    for (var i = 0; i < items.length - 1; i++) {
+                        var disX = drag.offsetLeft - items[i].offsetLeft
+                        var disY = drag.offsetTop - items[i].offsetTop
+                        var dis = Math.sqrt(disX ** 2 + disY ** 2)
+                        disarr.push(dis)
+                        newarr.push(dis)
+                    }
+                    disarr.sort(function(a, b) {
+                        return a - b;
+                    })
+                    var minvalue = disarr[0];
+                    var index = newarr.indexOf(minvalue);
+                    drag.style.left = items[index].style.left;
+                    drag.style.top = items[index].style.top;
+                    items[index].style.left = cloneNode.style.left;
+                    items[index].style.top = cloneNode.style.top;
+                    wrap.removeChild(cloneNode);
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
+                return false;
+            }
+        }
+        
+    </script>
+</html>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <style type="text/css">
+            *{margin: 0;padding: 0;}
+            #wrap {
+                position: relative;
+            }
+            #wrap div {
+                width: 100px;
+                height: 100px;
+                float: left;
+                border-radius: 10px;
+                text-align: center;
+                line-height: 100px;
+                font-size: 50px;
+                position: absolute;
+            }
+            #ccc{
+                width: 350px;
+                height: 250px;
+                border: 2px solid #ccc;
+            }
+            #xx{
+                width: 350px;
+                height: 30px;
+                border: 2px solid #ccc;
+            }
+            p{
+                font-size: 14px;
+                line-height: 30px;
+                color: dodgerblue;
+                margin-left: 290px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="xx">
+            <p>随机排序</p>
+        </div>
+        <div id ="ccc">
+        <div id="wrap"></div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        let wrap = document.getElementById("wrap")
+        let ml = 10;
+        let mt = 10;
+        for (var i = 0; i < 2; i++) {
+            for (var j = 0; j < 3; j++) {
+                var div = document.createElement('div');
+                wrap.appendChild(div)
+                div.style.top = i * (div.offsetHeight + mt) + "px"
+                div.style.left = j * (div.offsetWidth + ml) + "px"
+
+                div.style.background = "rgb(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," +
+                    Math.floor(Math.random() * 256) + ")"
+            }
+        }
+        var txt = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
+        var items = wrap.children;
+        for (var i = 0; i < items.length; i++) {
+            items[i].innerHTML = txt[i]
+        }
+        for (var i = 0; i < items.length; i++) {
+            items[i].onmousedown = function(e) {
+                var evt = e || event;
+                var offsetX = evt.offsetX;
+                var offsetY = evt.offsetY;
+                var drag = this;
+                var cloneNode = drag.cloneNode();
+                wrap.appendChild(cloneNode)
+                wrap.appendChild(drag)
+                drag.style.zIndex = 1; 
+                document.onmousemove = function(e) {
+                    var evt = e || event;
+                    var left = evt.clientX - offsetX;
+                    var top = evt.clientY - offsetY;
+                    drag.style.top = top + "px";
+                    drag.style.left = left + "px";
+                }
+                document.onmouseup = function() {
+                    var disarr = []
+                    var newarr = []
+                    for (var i = 0; i < items.length - 1; i++) {
+                        var disX = drag.offsetLeft - items[i].offsetLeft
+                        var disY = drag.offsetTop - items[i].offsetTop
+                        var dis = Math.sqrt(disX ** 2 + disY ** 2)
+                        disarr.push(dis)
+                        newarr.push(dis)
+                    }
+                    disarr.sort(function(a, b) {
+                        return a - b;
+                    })
+                    var minvalue = disarr[0];
+                    var index = newarr.indexOf(minvalue);
+                    drag.style.left = items[index].style.left;
+                    drag.style.top = items[index].style.top;
+                    items[index].style.left = cloneNode.style.left;
+                    items[index].style.top = cloneNode.style.top;
+                    wrap.removeChild(cloneNode);
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
+                return false;
+            }
+        }
+        
+    </script>
 </html>

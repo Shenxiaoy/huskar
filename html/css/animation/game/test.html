@@ -5,80 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    html, body, * {
-      margin: 0;
-      padding: 0;
-    }
-    .box {
-      width: 400px;
-      height: 400px;
-      background: rgba(196, 31, 31, 0.04);
-      position: relative;
-      border: 50px solid #ccc;
-    }
-    .cure {
-      width: 50px;
-      height: 50px;
-      background: rgba(171, 186, 226, 0.4);
+    .fg {
+      width: 200px;
+      height:200px;
+      border: 1px solid darkcyan;
       position: absolute;
-      border-radius: 50%;
+      transition: all 1s 4s;    }
+    .fg1 {
+      left: 20px;
+      top: 20px;
     }
-    .t1 {
-      left: 30px;
-      top: 149px;
-    }
-    .t2 {
-      left: 200px;
-      top: 80px;
-    }
-    .margintop {
-      width: 100%;
-      height: 1000px;
-    }
-    .beat {
-      border: 1px solid red;
+    .fg2 {
+      left: 300px;
+      top: 300px;
     }
   </style>
 </head>
 <body>
-  <div class="margintop"></div>
-  <div class="box" id="box">
-    <div class="cure t1"></div>
-    <div class="cure t2"></div>
-  </div>
-  <div class="margintop"></div>
-</body>
-<script>
-  const box = document.getElementById('box')
-  const t1 = document.getElementsByClassName('t1')[0]
-  // box.addEventListener('mousemove', function (e) {
-  //   const classAry = Array.from(e.target.classList)
-  //   console.log(classAry, 'h')
-  //   if (classAry.includes('t1')) {
-  //     console.log(e.clientX, 'ggg')
-  //     t1.style.left = e.offsetX + 'px'
-  //     t1.style.top = e.offsetY + 'px'
-  //   }
-  // })
-  function down (e) {
-    console.log('33333')
-    e.preventDefault()
-    const classAry = Array.from(e.target.classList)
-    if (classAry.includes('t1')) {
-      box.addEventListener('mousemove', move)
+  <p></p>
+  <br>
+  <br>
 
-      box.addEventListener('mouseup', function (e) {
-        box.removeEventListener('mousedown', down)
-        box.removeEventListener('mousemove', move)
-        box.addEventListener('mousedown', down)
-      })
-    }
-  }
-  function move (e) {
-    e.preventDefault()
-    t1.style.left = e.offsetX + 'px'
-    t1.style.top = e.offsetY + 'px'
-  }
-  box.addEventListener('mousedown', down)
-</script>
+  <div>
+    <div class="fg fg1">111</div>
+    <br>
+    <br>
+    <div class="fg fg2">222</div>
+  </div>
+</body>
 </html>

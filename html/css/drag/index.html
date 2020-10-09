@@ -9,6 +9,7 @@
       width: 100px;
       height: 100px;
       background-color: rgba(233,33,44, .1);
+      cursor: cell;
     }
     #box2 {
       width: 400px;
@@ -23,7 +24,7 @@
 </head>
 <body>
   <div>
-    <div id="box1" draggable="true"></div>
+    <div id="box1" draggable="true" class=""></div>
     <div id="box2"></div>
     <img src="./sdman.png" id='img' width='20' height='20' alt="">
   </div>
@@ -45,7 +46,7 @@
       div.style.height = '20px'
       div.style.overflow = 'hidden'
       div.appendChild(img)
-      ev.dataTransfer.setDragImage(document.getElementById('box1'), 5, 5)
+      ev.dataTransfer.setDragImage(document.getElementById('img'), -10, 10)
     })
     box2.addEventListener('dragover', function (ev) {
       ev.preventDefault()

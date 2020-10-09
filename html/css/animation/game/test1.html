@@ -56,6 +56,7 @@
             var disX = oEvent.clientX - box.offsetLeft;
             var disY = oEvent.clientY - box.offsetTop;
             fa.onmousemove=function (ev) {
+              console.log(ev.offsetX, box.offsetLeft)
                 oEvent = ev;
                 oEvent.preventDefault();
                 var x = oEvent.clientX -disX;
@@ -71,7 +72,7 @@
             }
             // 图形移出父盒子取消移动事件,防止移动过快触发鼠标移出事件,导致鼠标弹起事件失效
             fa.onmouseleave = function () {
-              fa.onmousemove=null;
+              // fa.onmousemove=null;
               fa.onmouseup=null;
             }
             // 鼠标弹起后停止移动

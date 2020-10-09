@@ -228,7 +228,7 @@ function doSomethingElse() {
   //   }
   // }
 
-  // return { test: 4 }
+  return { test: 4 }
 
   // return function() {
   //   console.log('xxxx')
@@ -243,8 +243,8 @@ function doSomethingElse() {
   // })
 }
 
-this.promise2 = doSomething().then(doSomethingElse)
-console.log(this.promise2)
+const promise2 = doSomething().then(doSomethingElse)
+console.log(promise2)
 ```
 
 #### Promise 使用 api
@@ -345,10 +345,45 @@ var removeChild = box.removeChild(box.childNodes[0])
 ```
 5) 替换节点
 ```js
-
 // 子节点替换
 var replaceChild= document.body.replaceChild(div1,div2)
 ```
+6) 克隆节点
+```js
+// obj.cloneNode(布尔值) true:深度克隆  false:只克隆表面
+const newNode = e.target.cloneNode()
+```
+
+### 元素节点获取
+```js
+document.getElementById()        //  id获取元素
+document.getElementsByTagName()
+document.getElementsByClassName()
+document.getElementsByName()                    //   大部分用于获取表单name
+document.querySelector()
+document.querySelectorAll()
+```
+### 如何获取浏览器的可视区宽、高
+```js
+document.documentElement.clientWidth()||document.body.clientwidth()   // 获取宽
+document.documentElement.clientHeight()|| document.body.clientHeight() // 获取高
+```
+### 节点类型
+|节点类型|nodeType|nodeName|nodeValue|
+|---|---|---|---|
+|元素节点|1|大写的标签名|null|
+|文本节点|3|#text|文本内容|
+|注释节点|8|#comment|注释内容|
+|document|9|#document|null|
+
+### 节点关系
+- parentNode    父节点---兼容
+- childNodes    子节点 -----兼容  能拿到所有的所有的子节点
+- children      子元素-----不兼容
+- previousSibling    上一个哥哥节点    previousElementSibiling 上一个哥哥元素
+- nextSibiling        下一个滴滴节点
+- firstChild     第一个子节点
+- lastChild     最后一个子节点
 
 ## 事件捕获和冒泡
 > 事件捕获：当某个元素触发某个事件（如onclick），顶层对象document就会发出一个事件流，随着DOM树的节点向目标元素节点流去，直到到达事件真正发生的目标元素。在这个过程中，事件相应的监听函数是不会被触发的。
@@ -367,4 +402,51 @@ var replaceChild= document.body.replaceChild(div1,div2)
 - x/y与clientX/clientY值一样，表示距浏览器可视区域（工具栏除外区域）左/上的距离；
 - pageX/pageY，距页面左/上的距离，它与clientX/clientY的区别是不随滚动条的位置变化；
 - screenX/screenY，距计算机显示器左/上的距离，拖动你的浏览器窗口位置可以看到变化；
-- layerX/layerY与offsetX/offsetY值一样，表示距有定位属性的父元素左/上的距离。
+- layerX/layerY，表示距有定位属性的父元素左/上的距离。
+- offsetX/offsetY 表示鼠标指针距离绑定元素边缘的距离；
+
+
+### offsetLeft offsetTop
+> 表示距离定位父级元素的位置偏移；
+
+## class
+
+### 静态属性 static 和 私有属性private
+> 静态属性值类本身的属性，不能被实例对象访问；而私有属性和实例属性不能被定义的静态方法所访问；私有属性只能在类内部访问，可以被实例方法所访问；
+
+```js
+class sd {
+  constructor () {
+    this.age = 456321
+    this.name = 'huskar'
+  }
+  #a = 2
+  aa () {
+    console.log(this.name)
+    console.log(this.age)
+    console.log(this.#a)
+  }
+  static as () {
+    console.log(this.name)
+    console.log(this.age)
+    console.log(this.#a)
+  }
+}
+const a = new sd()
+a.aa()
+sd.as()
+```
+
+### Math
+```js
+Math.round()   // 四舍五入
+Math.floor()  //  向下取整
+Math.ceil()  //  向上取整
+Math.abs()   //  取绝对值
+Math.sqrt()   // 开平发
+Math.max()  // 获取最大值
+Math.min()  //  获取最小值
+Math.pow()  // 幂次方
+Math.random() //  获取0-1随机数
+
+```

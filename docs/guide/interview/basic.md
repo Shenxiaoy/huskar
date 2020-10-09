@@ -138,4 +138,21 @@ span {
   border-bottom: 40px solid #ff0000;
 }
 ```
-###
+### html5标签 details 收缩展开
+```html
+<details open>
+  <summary>我相信的</summary>
+  <div>
+    <p>我是一只小小鸟</p>
+    <p>怎么，肥业飞不高</p>
+    <p>寻寻觅觅，寻寻觅觅</p>
+  </div>
+</details>
+</div>
+```
+- details：标签容器
+- open：表示默认展开
+- summary：子标签，展示标题
+
+### 网络协议
+> 1物理层、2数据连接层主要有以太网、无线LAN、电缆、光纤......；3网络层是IPv4、IPv6、ICMP/ARP......；4传输层：TCP、UDP......；5会话层、6表示层、7应用层：HTML/ftp/ssh/ssl......

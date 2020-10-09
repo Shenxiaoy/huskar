@@ -6,6 +6,7 @@
 3) 通过 <code>script</code> 添加 <code>async</code> 和<code>defer</code> 异步解析；
 4) 预渲染一个页面，在js解析的过程中，先加载此页面，随后删除、重新渲染页面；提升友好性，减少白屏时间。
 5) 对解析大、关键性脚本放到head块内。
+6) 配置 tree shaking 减去无用代码，减少导报体积； [tree-shaking](https://www.webpackjs.com/guides/tree-shaking/)
 
 ### 具体业务细节优化
 1) 对脚本和图片等静态资源做cdn优化；
@@ -54,4 +55,9 @@ requireComponent.keys().forEach(fileName => {
 })
 ```
 
+## 性能测试
 
+### vue包大小
+单独 vue库打包后 100kb左右，加上vue-router 140kb左右；
+
+如果使用了elment-ui等UI框架全局，基础体积将会达到2.5mb左右；
