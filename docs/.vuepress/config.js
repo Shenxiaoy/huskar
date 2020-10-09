@@ -1,6 +1,9 @@
 module.exports = {
   title: '笔记┉▓',
-  description: 'rua rua ooo',
+  description: '前端笔记 JavaScript css',
+  head: [
+    ['link', {rel: 'icon', href: '/bike.png'}]
+  ],
   base: '/doc/',
   themeConfig: {
     nav: [
@@ -15,13 +18,9 @@ module.exports = {
           collapsable: false,
           children: [
             {
-              title: '介绍',
+              title: '哈斯卡',
               path: '/guide/'
             },
-            // {
-            //   title: '特色1',
-            //   path: 'one'
-            // },
             {
               title: '性能优化',
               path: '/guide/performance/'

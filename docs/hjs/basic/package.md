@@ -14,4 +14,9 @@ const scrollToTop = () => {
 scrollToTop()
 ```
 
-### 
+### 范围随机数
+```js
+function randomNum(m, n) {
+  return Math.floor(Math.random() * (n - m + 1) + m);
+}
+```

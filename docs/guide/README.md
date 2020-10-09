@@ -1,27 +1,9 @@
+### 哈斯卡
+:tada: :100: :stuck_out_tongue:
 
-# 介绍
-Ant Design Vue 致力于提供给程序员愉悦的开发体验。
-> 在开始之前，推荐先学习 Vue 和 ES2015，并正确安装和配置了 Node.js v8.9 或以上。官方指南假设你已了解关于 HTML、CSS 和 JavaScript 的中级知识，并且已经完全掌握了 Vue 的正确开发方式。如果你刚开始学习前端或者 Vue，将 UI 框架作为你的第一步可能不是最好的主意。
-
-## 快速上手
-### 使用 vue-cli@3
-引入 ant-design-vue，安装脚手架
-```js
-npm install -g @vue/cli
-```
-### 引入antd
-这是 vue-cli 生成的默认目录结构。
-- 实战经验几乎没有
-- 说素食淡蓝色的预期和实例
-- 张国忠异常强烈
-
-#### 水电费水电费老师
-> sdflsdf
-
-## 定制主题
-### 默认框架主题
-
-#定制主题
-### 定制主题
-### 自主开发主题
-<test></test>
+- typescript
+- 小程序 - 上线
+- node
+- java
+- mysql
+- flutter
