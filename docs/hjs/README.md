@@ -1,4 +1,57 @@
 # 常用js-api
+> [MDN](https://developer.mozilla.org/zh-CN/)
+### WeakMap
+> weakMap 只接受对象作为健名，健名是弱引用，当健名为null的时候，引用对象会被垃圾回收；
+```js
+const wmp = new WeakMap()
+const a = {query: 'query'}
+wmp.set(a, 'coco')
+```
+ WeakMap只有四个属性，set/get/has/delete
+##### 应用场景
+- 在 DOM 对象上保存相关数据
+```js
+let wm = new WeakMap(), element = document.querySelector(".element");
+wm.set(element, "data");
+let value = wm.get(elemet);
+console.log(value); // data
+element.parentNode.removeChild(element);
+element = null;
+```
+- 数据缓存
+```js
+const cache = new WeakMap();
+function countOwnKeys(obj) {
+    if (cache.has(obj)) {
+        console.log('Cached');
+        return cache.get(obj);
+    } else {
+        console.log('Computed');
+        const count = Object.keys(obj).length;
+        cache.set(obj, count);
+        return count;
+    }
+}
+```
+- 私有属性
+```js
+const privateData = new WeakMap();
+
+class Person {
+    constructor(name, age) {
+        privateData.set(this, { name: name, age: age });
+    }
+    getName() {
+        return privateData.get(this).name;
+    }
+    getAge() {
+        return privateData.get(this).age;
+    }
+}
+export default Person;
+```
+
+
 ## base64 转换
 ### btoa 明文转密；atob 密转明文
 ```js
@@ -449,4 +502,22 @@ Math.min()  //  获取最小值
 Math.pow()  // 幂次方
 Math.random() //  获取0-1随机数
 
+```
+
+### WeakSet
+【MDN】: WeakSet 对象允许你将弱保持对象存储在一个集合中。
+```js
+var ws = new WeakSet();
+var foo = {};
+var bar = {};
+
+ws.add(foo);
+ws.add(bar);
+
+ws.has(foo);    // true
+ws.has(bar);   // true
+
+ws.delete(foo); // 从set中删除 foo 对象
+ws.has(foo);    // false, foo 对象已经被删除了
+ws.has(bar);    // true, bar 依然存在
 ```

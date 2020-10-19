@@ -156,3 +156,41 @@ span {
 
 ### 网络协议
 > 1物理层、2数据连接层主要有以太网、无线LAN、电缆、光纤......；3网络层是IPv4、IPv6、ICMP/ARP......；4传输层：TCP、UDP......；5会话层、6表示层、7应用层：HTML/ftp/ssh/ssl......
+
+### 克隆双循环对象
+> 两个对象中有相互对象的指针，本是个无限循环，再克隆过程中，碰到死循环对象，不再递归，直接返回此对象
+```js
+(
+  function test () {
+    const a = {
+      aa: {
+        name: 'aa'
+      }
+    }
+    const b = {
+      bb: 'bb'
+    }
+    a.point = b
+    b.point = a
+    const ws = new WeakSet()
+    function clone (obj) {
+      if (!ws.has(obj)) {
+        ws.add(obj)
+      } else {
+        return obj
+      }
+      const cloneObj = {}
+      for (let k in obj) {
+        if (typeof obj[k] === 'object') {
+          cloneObj[k] = clone(obj[k])
+        } else {
+          cloneObj[k] = obj[k]
+        }
+      }
+      return cloneObj
+    }
+    const c = clone(a)
+    console.log(c)
+  }()
+)
+```
