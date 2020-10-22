@@ -73,9 +73,53 @@ ETag 属性之间的比较采用的是弱比较算法，即两个文件除了每
 
 ### 防抖
 所谓防抖，就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
+```js
+const debounce = (fn, time) => {
+  let timeout = null;
+  return function() {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      fn.apply(this, arguments);
+    }, time);
+  }
+};
+```
 
 ### 节流
 所谓节流，就是指连续触发事件但是在 n 秒中只执行一次函数。
+```js
+const throttle = (fn, time) => {
+  let flag = true;
+  return function() {
+    if (!flag) return;
+    flag = false;
+    setTimeout(() => {
+      fn.apply(this, arguments);
+      flag = true;
+    }, time);
+  }
+}
+```
+
+### 函数珂里化
+> 指的是将一个接受多个参数的函数 变为 接受一个参数返回一个函数的固定形式，这样便于再次调用
+
+```js
+function add() {
+  const _args = [...arguments];
+  function fn() {
+    _args.push(...arguments);
+    return fn;
+  }
+  fn.toString = function() {
+    return _args.reduce((sum, cur) => sum + cur);
+  }
+  return fn;
+}
+
+```
+
+### 
 
 ## 前端web攻击
 ### XSS攻击 跨站脚本攻击

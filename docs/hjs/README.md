@@ -130,174 +130,232 @@ sxy
 
 ##### 代码实现：
 ```js
-// promise 构造函数
-function promise(fn) {
-  let that = this
-  that.status = 'pending' // 存储promise的state
-  that.value = '' // 存储promise的value
-  that.reason = '' // 存储promise的reason
-  that.onFulfilledCb = [] // 存储then方法中注册的回调函数（第一个参数）
-  that.onRejectedCb = [] // 存储then方法中注册的回调函数（第二个参数）
+const PENDING = 'pending';
+const FULFILLED = 'fulfilled';
+const REJECTED = 'rejected';
 
-  // 2.1
-  function resolve(value) {
-    // 将promise的状态从pending更改为fulfilled，并且以value为参数依次调用then方法中注册的回调
-    setTimeout(() => {
-      if (that.status === 'pending') {
-        that.status = 'fulfilled'
-        that.value = value
-        // 2.2.2、2.2.6
-        that.onFulfilledCb.map(item => {
-          item(that.value)
-        })
-      }
-    }, 0)
-  }
+class MyPromise {
+    static resolve(val) {
+        return new MyPromise((resolve, reject) => {
+            resolve(val)
+        })
+    }
+    //reject方法
+    static reject(val) {
+        return new MyPromise((resolve, reject) => {
+            reject(val)
+        })
+    }
+    static all(promiseArr) {
+        return new MyPromise((resolve, reject) => {
+            let result = [];
 
-  function reject(reason) {
-    // 将promise的状态从pending更改为rejected，并且以reason为参数依次调用then方法中注册的回调
-    setTimeout(() => {
-      if (that.status === 'pending') {
-        that.status = 'rejected'
-        that.reason = reason
-        // 2.2.3、2.2.6
-        that.onRejectedCb.map(item => {
-          item(that.reason)
-        })
-      }
-    }, 0)
-  }
+            promiseArr.forEach((promise, index) => {
+                promise.then((value) => {
+                    result[index] = value;
 
-  fn(resolve, reject)
+                    if (result.length === promiseArr.length) {
+                        resolve(result);
+                    }
+                }, reject);
+            });
+        });
+    }
+    static race(promiseArr) {
+        return new MyPromise((resolve, reject) => {
+            promiseArr.forEach(promise => {
+                promise.then((value) => {
+                    resolve(value);
+                }, (err) => reject(err));
+            });
+        });
+    }
+    static deferred() {
+        let dfd = {};
+        dfd.promies = new MyPromise((resolve, reject) => {
+            dfd.resolve = resolve;
+            dfd.rfeject = reject;
+        });
+        return dfd;
+    }
+
+    constructor(executor) {
+        this.state = PENDING;
+        this.value = null;
+        this.reason = null;
+        // 存放成功回调的函数
+        this.onFulfilledCallbacks = [];
+        // 存放失败回调的函数
+        this.onRejectedCallbacks = [];
+
+        const resolve = value => {
+            if (this.state === PENDING) {
+                this.value = value;
+                this.state = FULFILLED;
+                this.onFulfilledCallbacks.map(fn => fn());
+            }
+        }
+
+        const reject = value => {
+            if (this.state === PENDING) {
+                this.reason = value;
+                this.state = REJECTED;
+                this.onRejectedCallbacks.map(fn => fn());
+            }
+        }
+
+        try {
+            executor(resolve, reject);
+        } catch (error) {
+            reject(error);
+        }
+    }
+
+    then(onFulfilled, onRejected) {
+        let self = this;
+        let promise2 = null;
+        //解决onFulfilled,onRejected没有传值的问题
+        onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : y => y
+        //因为错误的值要让后面访问到，所以这里也要跑出个错误，不然会在之后then的resolve中捕获
+        onRejected = typeof onRejected === 'function' ? onRejected : err => {
+            throw err;
+        }
+
+        promise2 = new MyPromise((resolve, reject) => {
+            if (self.state === PENDING) {
+                self.onFulfilledCallbacks.push(() => {
+                    setTimeout(() => {
+                        try {
+                            let x = onFulfilled(self.value);
+                            self.resolvePromise(promise2, x, resolve, reject);
+                        } catch (reason) {
+                            reject(reason);
+                        }
+                    }, 0)
+
+                });
+                self.onRejectedCallbacks.push(() => {
+                    setTimeout(() => {
+                        try {
+                            let x = onRejected(self.reason);
+                            self.resolvePromise(promise2, x, resolve, reject);
+                        } catch (reason) {
+                            reject(reason);
+                        }
+                    }, 0);
+                });
+            }
+
+            if (self.state === FULFILLED) {
+                setTimeout(() => {
+                    try {
+                        let x = onFulfilled(self.value);
+                        self.resolvePromise(promise2, x, resolve, reject);
+                    } catch (reason) {
+                        reject(reason);
+                    }
+                }, 0);
+            }
+
+            if (self.state === REJECTED) {
+                setTimeout(() => {
+                    try {
+                        let x = onRejected(self.reason);
+                        self.resolvePromise(promise2, x, resolve, reject);
+                    } catch (reason) {
+                        reject(reason);
+                    }
+                })
+            }
+        });
+
+        return promise2;
+    }
+
+    resolvePromise(promise2, x, resolve, reject) {
+        let self = this;
+        let called = false; // called 防止多次调用
+        //因为promise2是上一个promise.then后的返回结果，所以如果相同，会导致下面的.then会是同一个promise2，一直都是，没有尽头
+        //相当于promise.then之后return了自己，因为then会等待return后的promise，导致自己等待自己，一直处于等待
+        if (promise2 === x) {
+            return reject(new TypeError('循环引用'));
+        }
+        //如果x不是null，是对象或者方法
+        if (x !== null && (Object.prototype.toString.call(x) === '[object Object]' || Object.prototype.toString.call(x) === '[object Function]')) {
+            // x是对象或者函数
+            try {
+                let then = x.then;
+
+                if (typeof then === 'function') {
+                    then.call(x, (y) => {
+                        // 别人的Promise的then方法可能设置了getter等，使用called防止多次调用then方法
+                        if (called) return;
+                        called = true;
+                        // 成功值y有可能还是promise或者是具有then方法等，再次resolvePromise，直到成功值为基本类型或者非thenable
+                        self.resolvePromise(promise2, y, resolve, reject);
+                    }, (reason) => {
+                        if (called) return;
+                        called = true;
+                        reject(reason);
+                    });
+                } else {
+                    if (called) return;
+                    called = true;
+                    resolve(x);
+                }
+            } catch (reason) {
+                if (called) return;
+                called = true;
+                reject(reason);
+            }
+        } else {
+            // x是普通值，直接resolve
+            resolve(x);
+        }
+    }
+    //catch方法
+    catch (onRejected) {
+        return this.then(null, onRejected)
+    } finally(fn) {
+        return this.then(value => {
+            fn();
+            return value;
+        }, reason => {
+            fn();
+            throw reason;
+        });
+    }
 }
 
-// 2.2
-promise.prototype.then = function(onFulfilled, onRejected) {
-  let that = this
-  let promise2
+// const mp1 = MyPromise.resolve(1);
+// const mp2 = MyPromise.resolve(2);
+// const mp3 = MyPromise.resolve(3);
+// const mp4 = MyPromise.reject(4);
 
-  // 2.2.1、2.2.5
-  onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : v => v
-  onRejected = typeof onRejected === 'function' ? onRejected : r => r
+// MyPromise.all([mp1, mp2, mp3]).then(x => {
+//     console.log(x);
+// }, (err) => {
+//     console.log('err1', err);
+// })
+// MyPromise.race([mp1, mp4, mp2, mp3]).then(x => {
+//     console.log(x);
+// }, (err) => {
+//     console.log('err2', err);
+// })
 
-  if (that.status === 'pending') {
-    // 2.2.7
-    return promise2 = new promise((resolve, reject) => {
-      that.onFulfilledCb.push(value => {
-        try {
-          let x = onFulfilled(value)
-          promiseResolution(promise2, x, resolve, reject)
-        } catch(e) {
-          // 2.2.7.2
-          reject(e)
-        }
-      })
+var mp = new MyPromise((resolve, reject) => {
+    console.log(11111);
+    setTimeout(() => {
+        resolve(22222);
+        console.log(3333);
+    }, 1000);
+});
+mp.then(x => {
+    console.log(x);
+}, (err) => {
+    console.log('err2', err);
+})
 
-      that.onRejectedCb.push(reason => {
-        try {
-          let x = onRejected(reason)
-          promiseResolution(promise2, x, resolve, reject)
-        } catch(e) {
-          // 2.2.7.2
-          reject(e)
-        }
-      })
-    })
-  }
-}
-
-// promise resolution
-function promiseResolution(promise2, x, resolve, reject) {
-  let then
-  let thenCalled = false
-  // 2.3.1
-  if (promise2 === x) {
-    return reject(new TypeError('promise2 === x is not allowed'))
-  }
-  // 2.3.2
-  if (x instanceof promise) {
-    x.then(resolve, reject)
-  }
-  // 2.3.3
-  if (typeof x === 'object' || typeof x === 'function') {
-    try {
-      // 2.3.3.1
-      then = x.then
-      if (typeof then === 'function') {
-        // 2.3.3.2
-        then.call(x, function resolvePromise(y) {
-          // 2.3.3.3.3
-          if (thenCalled) return
-          thenCalled = true
-          // 2.3.3.3.1
-          return promiseResolution(promise2, y, resolve, reject)
-        }, function rejectPromise(r) {
-          // 2.3.3.3.3
-          if (thenCalled) return
-          thenCalled = true
-          // 2.3.3.3.2
-          return reject(r)
-        })
-      } else {
-        // 2.3.3.4
-        resolve(x)
-      }
-    } catch(e) {
-      // 2.3.3.3.4.1
-      if (thenCalled) return
-      thenCalled = true
-      // 2.3.3.2
-      reject(e)
-    }
-  } else {
-    // 2.3.4
-    resolve(x)
-  }
-}
-
-function doSomething() {
-  return new promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('promise done')
-    }, 2000)
-  })
-}
-
-function doSomethingElse() {
-  // return this.promise2
-
-  // return new promise((resolve, reject) => {
-  //   setTimeout(() => {
-  //     resolve('promise2 done')
-  //   }, 1000)
-  // })
-
-  // return {
-  //   then: (resolvePromise, rejectPromise) => {
-  //     setTimeout(() => {
-  //       resolvePromise(22)
-  //       rejectPromise(33)
-  //     })
-  //   }
-  // }
-
-  return { test: 4 }
-
-  // return function() {
-  //   console.log('xxxx')
-  // }
-
-  // return 4
-
-  // return new Promise((resolve, reject) => {
-  //   setTimeout(() => {
-  //     reject('ES6 promise')
-  //   }, 1000)
-  // })
-}
-
-const promise2 = doSomething().then(doSomethingElse)
-console.log(promise2)
 ```
 
 #### Promise 使用 api
