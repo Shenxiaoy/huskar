@@ -2,6 +2,57 @@
 
 ### Symbol.interator
 
+### 图片懒加载
+```js
+function lazyload() {
+  const imgs = document.getElementsByTagName('img');
+  const len = imgs.length;
+  // 视口的高度
+  const viewHeight = document.documentElement.clientHeight;
+  // 滚动条高度
+  const scrollHeight = document.documentElement.scrollTop || document.body.scrollTop;
+  for (let i = 0; i < len; i++) {
+    const offsetHeight = imgs[i].offsetTop;
+    if (offsetHeight < viewHeight + scrollHeight) {
+      const src = imgs[i].dataset.src;
+      imgs[i].src = src;
+    }
+  }
+}
+
+// 可以使用节流优化一下
+window.addEventListener('scroll', lazyload);
+```
+
+
+### jsonp
+```js
+const jsonp = ({ url, params, callbackName }) => {
+  const generateUrl = () => {
+    let dataSrc = '';
+    for (let key in params) {
+      if (Object.prototype.hasOwnProperty.call(params, key)) {
+        dataSrc += `${key}=${params[key]}&`;
+      }
+    }
+    dataSrc += `callback=${callbackName}`;
+    return `${url}?${dataSrc}`;
+  }
+  return new Promise((resolve, reject) => {
+    const scriptEle = document.createElement('script');
+    scriptEle.src = generateUrl();
+    document.body.appendChild(scriptEle);
+    window[callbackName] = data => {
+      resolve(data);
+      document.removeChild(scriptEle);
+    }
+  })
+}
+
+```
+
+
+
 ## http请求
 
 ### http请求方法
@@ -70,6 +121,11 @@ ETag 属性之间的比较采用的是弱比较算法，即两个文件除了每
 
 
 ### 箭头函数与普通函数的区别
+1) 箭头函数不会创建this，内部this指向当前所在的全局作用域；
+2) call bind apply并不能改变箭头函数的this指向；
+3) 没有arguments，或者指向所在函数作用域的arguments;
+4) 不能作为构造函数，没有原型指向；
+5) 也不能作为Generator迭代函数使用，因此内部yeild也无法使用；
 
 ### 防抖
 所谓防抖，就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。

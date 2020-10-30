@@ -1,5 +1,54 @@
 # 常用js-api
 > [MDN](https://developer.mozilla.org/zh-CN/)
+
+### 逻辑运算符（标准：ES2021）
+&&= ： 前为真才赋值
+```js
+let a = 1
+let b = 2
+let c = 3
+a &&= b
+c &&= b
+// a = 2, c = 0
+```
+||= ： 前为假才赋值
+```js
+let a = 1
+let b = 2
+let c = 3
+a ||= b
+c ||= b
+// a = 1, b = 2
+```
+??= ：空值运算符，当前为null或undefined才赋值
+```js
+let a = 1
+let b = 2
+let c = null
+let d
+c &&= b
+d &&= b
+// c = 2, d = 2
+```
+_ ：数值分隔符，不会影响数值本身
+```js
+let a = 2_09
+let b = a - 1
+// b = 208
+```
+
+### Object.entries and Object.fromEntries
+Object.entries 将对象转化成二维数组，Object.fromEntries正好相反，把二维数组转化成对象；
+```js
+const obj = { prop1: 2, prop2: 10, prop3: 15 }
+let array = Object.entries(obj); 
+// [["prop1", 2], ["prop2", 10], ["prop3", 15]]
+
+let c = Object.fromEntries(array)
+// c = {prop1: 2, prop2: 10, prop3: 15}
+```
+
+
 ### WeakMap
 > weakMap 只接受对象作为健名，健名是弱引用，当健名为null的时候，引用对象会被垃圾回收；
 ```js
@@ -386,6 +435,7 @@ export default function (request) {
 - Promise.all()   接受多了promise对象, 只要有一个Promise被reject了，那么组成的新的Promise的状态也是reject的
 
 - Promise.race()  接受多个promise对象， 只要包裹的的Promise对象中有一个的状态发生了改变，那么组成的这个新的Promise对象的状态就是上面那个率先改变的Promise实例的状态
+- Promise.any()   接受多个Promise对象，理想中是返回正常的promsie结果，但当reject异常先返回，不会跟Promise.race一样直接返回状态，会继续等待resolve结果，然后返回；当整个队列的promise都返回的是reject异常，那么则会返回异常。
 
 ## Generator 迭代器
 ```js

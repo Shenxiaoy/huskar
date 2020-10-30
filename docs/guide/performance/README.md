@@ -65,3 +65,8 @@ v2单独 vue库打包后 100kb左右，加上vue-router 140kb左右；
 如果使用了elment-ui等UI框架全局，基础体积将会达到2.5mb左右；
 
 v3打包后基础js包80kb，比v2小近20kb;
+
+以上是通过vue/cli打包后的大小；如果webpack 配置项去打包vue，64kb。
+
+### 微前端架构
+webpack5 出了<code>module feberation</code>，重新定义web前端项目架构，最突出的功能解决了多冗余问题，各打包bundle可以互相共享代码段。

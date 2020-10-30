@@ -1,11 +1,8 @@
-const a = new Promise((res) => {
-  setTimeout(() => {
-    res(55)
-    console.log('deee')
-    res(55555)
-  }, 0);
-})
+const a = 'ss'
 
-a.then((m, n) => {
-  console.log(m, n, 'll')
-})
+~function () {
+  console.log(a)
+  var b = 'sss11'
+}()
+console.log(a)
+console.log(b)
