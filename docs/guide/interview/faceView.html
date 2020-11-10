@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>faceView.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+ <center>
+     <h1>申晓宇个人简历</h1>
+ </center>
+<h2 id="%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF">个人信息</h2>
+<ul>
+<li>性 别：男             年 龄：31</li>
+<li>手 机：13717742334        邮 箱：altersxy@126.com</li>
+<li>专 业：计算机网络          岗 位：web前端工程师</li>
+</ul>
+<h2 id="%E5%B7%A5%E4%BD%9C%E5%8F%8A%E6%95%99%E8%82%B2%E7%BB%8F%E5%8E%86">工作及教育经历</h2>
+<ul>
+<li>国美电器有限公司       2019.7~至今      供应链体系-订单优化中心</li>
+<li>高思教育集团         2017.8~2019.7     爱学习-后台管理中心</li>
+<li>河北大学            2009.9~2012.7    计算机网络专业-专科</li>
+</ul>
+<h2 id="%E4%B8%93%E4%B8%9A%E6%8A%80%E8%83%BD">专业技能</h2>
+<ul>
+<li>熟练掌握 html、css、javascript等语言</li>
+<li>熟练使用 vue、react、element-ui、antd、vant等框架开发web项目</li>
+<li>熟练使用 node、webpack等搭建前端工程化,能够使用微前端思想架构大型前端web项目</li>
+<li>熟悉微信小程序开发</li>
+</ul>
+<h2 id="%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86">项目经历</h2>
+<ol>
+<li>
+<p>国美电器 - 供应链O2O管理系统 - web前端开发</p>
+<ul>
+<li>集成门店、商品、库存、营销、订单等10多个模块功能，服务对象为线下国美线下超市、门店使用。</li>
+<li>采用微前端思想架构web项目，各模块独立出前端项目，上线整合各项目bundle，共享底层公共框架。</li>
+<li>使用技术栈：vue全家桶 + element-ui + echarts + amap等</li>
+<li>分配前端各项目需求开发，开发集成公共UI、公共模块的的组件库，供各前端项目使用</li>
+<li>约束开发规范，推进开发流程规范化</li>
+</ul>
+</li>
+<li>
+<p>国美电器 - 自营百货商家端、运营端 - web前端开发</p>
+<ul>
+<li>商家端包括商品、库存、对账等模块功能，运营端包括供应商、采购、价格等模块，对接多个系统后台</li>
+<li>整个百货前端项目主要是采用MPA聚合各个项目,配置百货前端团队做商品、库存、订单等模块的权限、业务开发</li>
+<li>采用技术栈：vue + ant-design-vue</li>
+<li>完善gome-ui组件库，做统一UI标准化</li>
+</ul>
+</li>
+<li>
+<p>国美电器 - CMS系统 - web前端开发</p>
+<ul>
+<li>可视化配置小程序首页，通过CMS系统可完成对微信小程序首页各模块商品、样式、布局等的配置</li>
+<li>CMS小程序模块可视化界面与小程序UI高度匹配，通过拖拽完成模块添加，各模块完成图片、商品、样式、布局等功能集成</li>
+<li>采用技术栈：vue + javascript完成拖拽复杂交互</li>
+<li>完成多列商品、智能切图、楼层等模块的功能开发</li>
+<li>为国美生鲜、火锅等业务提供服务</li>
+</ul>
+</li>
+<li>
+<p>高思集团 - 爱学习后台管理中心 - web前端开发</p>
+<ul>
+<li>为爱学习双师、题库、财务、商城等14条业务线提供后台服务支撑</li>
+<li>技术栈：使用 react全家桶 + redux + and-design开发复杂的交互需求</li>
+<li>主要工作内容开发后台web业务需求，完善公共组件库，承接财务、基础数据、CMS等业务线的需求对接</li>
+<li>定期review代码，完善开发规范和流程</li>
+</ul>
+</li>
+</ol>
+<h2 id="%E5%85%B6%E5%AE%83%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C">其它项目经验</h2>
+<ul>
+<li>国美美店店主、团活动等 H5的开发</li>
+<li>高思爱学习商城C端页面开发</li>
+<li>京东云华南城项目的开发</li>
+</ul>
+<h2 id="%E4%B8%AA%E4%BA%BA%E8%B4%A6%E5%8F%B7">个人账号</h2>
+<ul>
+<li>笔记博客： http://www.shenxiaoyu.cn/doc/ (主要是对以往一些知识点的记录，方便回顾)</li>
+</ul>
+<h2 id="%E5%85%B6%E4%BB%96%E4%BF%A1%E6%81%AF">其他信息</h2>
+<ul>
+<li>喜欢钻研技术，尝试搭建nginx、Jenkins、github服务站点，构建前端项目服务</li>
+<li>爱好运动、篮球，烹饪</li>
+</ul>
+
+</body>
+</html>
