@@ -1,6 +1,44 @@
 # 常用js-api
 > [MDN](https://developer.mozilla.org/zh-CN/)
 
+## unicode 转换
+### 我们使用 <code>codePointAt</code> 和<code>fromCodePonit</code> 对字符和unicode码点之间进行转换，更好的处理占4个字节的字符。
+判断一个字符是否有四个字节组成
+```js
+function is32Bit(c) {
+  return c.codePointAt(0) > 0xFFFF;
+}
+is32Bit("𠮷") // true
+is32Bit("a") // false
+```
+<code>codePointAt</code> 对字符转换成十进制的的码点，如果是字符串则转换的是第一个字符。
+
+<code>window.decodeURIComponent</code> 、<code>window.unescape</code> 可以将\u开头的 unicode转换成字符。
+```js
+var s = '𠮷a'
+s.codePointAt(0) // 134071
+s.codePointAt(1) // 57271
+s.codePointAt(2) // 97
+
+window.decodeURIComponent("\u{20BB7}")
+```
+<code>fromCodePonit</code> 可以将码点（十进制、十六进制都可以）转换成字符串
+```js
+var a = String.fromCodePoint(134071)
+// 𠮷
+```
+
+### 其他unicode 和 string 之间转换的方法
+```js
+// //unicode转String
+eval("'" + str + "'")
+(new Function("return '" + str + "'"))()
+unescape(str.replace(/\u/g, "%u"))
+
+// string转unicode（str字符的第i个）
+"\\u" + str.charCodeAt(i).toString(16)
+```
+
 ### 逻辑运算符（标准：ES2021）
 &&= ： 前为真才赋值
 ```js
@@ -111,7 +149,7 @@ window.atob("c2hlbnhpYW95dQ==")
 "shenxiaoyu"
 ```
 
-## Unicode 转换
+## 字符串 URL 转换
 ### window.encodeURIComponent
 ### window.decodeURIComponent
 ```js
@@ -150,26 +188,6 @@ list.includes(2)  // true
 const str = 'fanxianfeng'
 str.includes('fan')  // true
 str.includes('fanf')  // false
-```
-
-## 模板字符串 自变量
-
-```js
-function aa (l, m, n) {
-  console.log(l)
-  console.log(m)
-  console.log(n)
-}
-const name = 'sxy'
-const age = 12
-const city = 'bj'
-const address = 'dxd'
-aa`i am is ${name},age is${age},at${city}, from${address}`
-
-// 输出，第一个参数为字符串集合，剩下参数依次为引用变量
-[ 'i am is ', ',age is', ',at', ', from', '' ]
-sxy
-12
 ```
 
 ## Promise
@@ -530,12 +548,12 @@ document.documentElement.clientWidth()||document.body.clientwidth()   // 获取�
 document.documentElement.clientHeight()|| document.body.clientHeight() // 获取高
 ```
 ### 节点类型
-|节点类型|nodeType|nodeName|nodeValue|
-|---|---|---|---|
-|元素节点|1|大写的标签名|null|
-|文本节点|3|#text|文本内容|
-|注释节点|8|#comment|注释内容|
-|document|9|#document|null|
+| 节点类型 | nodeType | nodeName     | nodeValue |
+| -------- | -------- | ------------ | --------- |
+| 元素节点 | 1        | 大写的标签名 | null      |
+| 文本节点 | 3        | #text        | 文本内容  |
+| 注释节点 | 8        | #comment     | 注释内容  |
+| document | 9        | #document    | null      |
 
 ### 节点关系
 - parentNode    父节点---兼容
