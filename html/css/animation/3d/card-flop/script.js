@@ -4,13 +4,13 @@ let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard, secondCard;
 
-function flipCard() {
+function flipCard () {
   // 剛剛沒配對成功的話，就把牌蓋起來
   if (lockBoard) return;
 
   // 避免翻同一張牌當做第二張
   if (this === firstCard) return;
-  
+
   this.classList.add('flip');
 
   if (!hasFlippedCard) {
@@ -24,7 +24,7 @@ function flipCard() {
   checkForMatch();
 }
 
-function checkForMatch() {
+function checkForMatch () {
   // 如果牌組配對成功 => isMatch
   // 就不可以再點擊那組牌 => disableCards()
   // 配對錯誤就把該牌組蓋起來 => unflipCards()
@@ -32,7 +32,7 @@ function checkForMatch() {
   isMatch ? disableCards() : unflipCards();
 }
 
-function disableCards() {
+function disableCards () {
   // 移除監聽事件，釋放記憶體
   firstCard.removeEventListener('click', flipCard);
   secondCard.removeEventListener('click', flipCard);
@@ -40,7 +40,7 @@ function disableCards() {
   resetBoard();
 }
 
-function unflipCards() {
+function unflipCards () {
   lockBoard = true;
 
   // 把牌蓋起來
@@ -51,12 +51,12 @@ function unflipCards() {
   }, 1500);
 }
 
-function resetBoard() {
+function resetBoard () {
   [hasFlippedCard, lockBoard] = [false, false];
   [firstCard, secondCard] = [null, null];
 }
 
-(function shuffle() {
+(function shuffle () {
   cards.forEach(card => {
     let randomPos = Math.floor(Math.random() * 12);
     card.style.order = randomPos;

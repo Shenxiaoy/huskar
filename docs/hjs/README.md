@@ -1,6 +1,31 @@
 # 常用js-api
 > [MDN](https://developer.mozilla.org/zh-CN/)
 
+
+### vue事件中获取dom元素
+```js
+methods: {
+    clickfun(e) {
+      e.target //是你当前点击的元素
+      e.currentTarget //是你绑定事件的元素
+      //获得点击元素的前一个元素
+      e.currentTarget.previousElementSibling.innerHTML
+      //获得点击元素的第一个子元素
+      e.currentTarget.firstElementChild
+      //获得点击元素的下一个元素
+      e.currentTarget.nextElementSibling
+      // 获得点击元素中id为string的元素
+      e.currentTarget.getElementById("string")
+      //获得点击元素的class属性
+      e.currentTarget.getAttributeNode('class')
+      // 获得点击元素的父级元素
+      e.currentTarget.parentElement
+      // 获得点击元素的前一个元素的第一个子元素的HTML值
+      e.currentTarget.previousElementSibling.firstElementChild.innerHTML
+   }
+}
+```
+
 ## unicode 转换
 ### 我们使用 <code>codePointAt</code> 和<code>fromCodePonit</code> 对字符和unicode码点之间进行转换，更好的处理占4个字节的字符。
 判断一个字符是否有四个字节组成

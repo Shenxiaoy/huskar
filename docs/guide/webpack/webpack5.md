@@ -222,12 +222,136 @@ webpack bundle 模块聚合、共享，也是我觉得webpack5最大的特色，
           }
         })
 ```
-- filename： 暴露的模块文件名称，也可以说是配置打包后单独文件的入口；
+- filename： 暴露的模块文件名称，也可以说是配置打包后单独文件的名称；
 - name： 模块全局唯一名称，对当前模块的标记；
 - exposes：表示导出的模块，可以在别的bundle中引入使用；为了兼容一些版本，建议名称写成文件路径形式字符串；
 - shared： 共享模块队列，配置此参数后，也会把配置的模块打包出单独文件；
+- library: 声明一个挂载在全局下的变量名，默认为当前name的名称，可以更改全局的名称；
+- remotes：作为引用方最关键的配置项，用于声明需要引用的远程资源包的名称与模块名称；
 
 模块之间共享代码片段，属于异步远程资源请求，所以在webpack配置入口文件需要异步加载，可以通过import 返回promise的方式去加载js文件；
+
+#### 配置主项目和子项目共享代码块配置
+主项目共享test.js和vue给子模块使用
+```js
+// 主项目
+  new ModuleFederationPlugin({
+    filename: 'commont.js',
+    name: 'bsadmin',
+    exposes: {
+      './commont': path.resolve(__dirname, '../src/components/test.js')
+    },
+    shared: {  // 主项目和子项目都需配置shared，才能实现模块共享
+      vue: {
+        singleton: true
+      }
+    }
+  })
+
+```
+子项目获取主项目共享的test.js导出模块和公共module vue
+```js
+    new ModuleFederationPlugin({
+      name: 'stockt',
+      remotes: {
+        stockM: 'bsadmin@http://localhost:8080/commont.js',  // 指向主项目打包下的commot.js文件
+      },
+      exposes: {
+      },
+      shared: {
+        vue: {
+          singleton: true,
+          import: false  // 表示不本地导入vue，远程remotes获取 vue模块
+        }
+      }
+    })
+```
+> 以上一般普通的项目使用这样的配置就可以实现公共模块包括公共组件、UI、类库等共享，及node_modules 模块的共享，这样既保证公共模块的一致性，也减少了代码复用性和bundle的体积。
+
+#### 微服务架构实现
+在我们想实现微服务统筹子模块集合，为避免远程模块重复调用，又要保证公共模块的一致性，需要想出一个思路去解决这样的问题；最初想到的是通过dns引入公共js解决问题，但我们还是想尝试使用 federation的配置去实现。
+
+在查看官方 [module-fedration example](https://github.com/module-federation/module-federation-examples),看到 ModuleFederationPlugin 下remotes参数还可以配置 相对路径和全局变量，如何这样可以成功的话，那么主项目，配置后部署后，引入子项目路由后的js,或者动态配置路由指向子项目的bundle 主js，remotes暴露出全局变量映射出公共代码库和node_modules的shared，这样每个路由对应的子项目都是远程加载，主项目占据顶端渲染，完成微服务架构的一次循环。
+
+> 思路：首先我们要确保 node_modules 中 vue公共模块是通过shared配置达成公用一致目标，和exposes 共享的公共模块也要一致性，即便是在后期合并主项目和子项目的时候；其次路由配置也要放到主项目中去，路由要统一管理配置，在主项目暴露出路由实例，通过addRoutes去配置加载子项目中的路由；剩下需要去配置vue实例，使得主项目和子项目路由内容确保在一个SPA中。
+
+##### 主项目相关配置示例
+```js
+// webpack 配置   webpack.base.config.js
+  plugins: [
+    new ModuleFederationPlugin({
+      filename: 'commont.js',
+      name: 'bsadmin',
+      library: { type: 'var', name: 'bsadmin' },
+      exposes: {
+        './commont': path.resolve(__dirname, '../src/components/test.js')
+      },
+      shared: {
+        vue: {
+          singleton: true
+        }
+      }
+    })
+  ]
+
+// test.js 导出模块内容
+import renderDom from '../router/renderVueRouter'
+export default {
+  renderDom
+}
+
+// 主项目renderDom 和 router配置
+import Vue from 'vue'
+import App from '../App.vue'
+import addRouters from './exportRouters'  // 主项目相关路由组件及一些补充配置
+function renderDom (routes = []) {
+  console.log('5555')
+  addRouters.addRoutes(routes)
+  new Vue({
+    el: '#app1',
+    router: addRouters,
+    render: h => h(App)
+  })
+}
+export default renderDom
+
+```
+##### 子项目对应配置
+```js
+// wbepack配置
+  plugins: [
+    new ModuleFederationPlugin({
+      name: 'stockt',
+      remotes: {
+        // stockM: 'bsadmin@http://localhost:8080/commont.js',  // 远程请求可以用到本地开发环境中去
+        stockM: 'bsadmin@../public/test.js',  // 以后合并到主项目中去，为公用一份commont.js，不配置远程资源，在本地实例化一个全局变量；未找到更好的配置去解决这个问题，目前是兼容这个请求形式。
+      },
+      exposes: {
+      },
+      shared: {
+        vue: {
+          singleton: true,
+          import: false
+        }
+      }
+    })
+  ]
+
+// 入口文件配置
+import('stockM/commont').then(json => {
+  import('./main.js')
+  // 从commont 中获取实例化的路由回调，并触发dom render
+  window.stock_m = json.default
+})
+
+// main.js
+import routes from './router'  // 子项目相关路由配置
+stock_m.renderDom(routes)
+
+```
+> 把各个子项目bundle后的入口js 通过script插入，就可以实现SPA加载主项目和子项目的页面，而vue commont.js共享一份。
+
+
 
 ### 配置解析vue
 - 安装 vue vue-loader vue-template-compiler 插件
