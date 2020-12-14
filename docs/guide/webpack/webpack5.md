@@ -7,7 +7,7 @@ npm install webpack webpack-cli -D
 ```
 > 最新版本webpack-cli可能会与webpack-dev-server 4 不兼容，不能配置其命令；
 
-### webpack 打包方式
+## webpack 打包方式
 1) 通过在package.json script中配置 webpack需要运行的配置文件；
 ```js
  "scripts": {
@@ -34,7 +34,7 @@ compiler.run((err, stats) => {
 })
 ```
 
-### 安装babel模块
+## 安装babel模块
 1) 添加module 文件解析模块
 ```js
   module: {
@@ -56,7 +56,7 @@ compiler.run((err, stats) => {
   ]
 }
 ```
-#### 对css样式的loader处理
+### 对css样式的loader处理
 安装：
 ```js
 npm install css-loader mini-css-extract-plugin -D
@@ -74,7 +74,7 @@ plugins: [new MiniCssExtractPlugin()]
 - css-loader 对css内容进行解析
 - mini-css-extract-plugin 抽离css样式出单独文件 [具体参数配置](https://webpack.docschina.org/plugins/mini-css-extract-plugin/#root)
 
-#### 对图片的loader处理
+### 对图片的loader处理
 - file-loader 对图片进行打包，把图片存储到打包后的路径中，会是http请求的图片文件；
 - url-loader  对图片进行打包，通过配置可以将小体积的图片转成base64存储于js中；
 - 可通过配置 img-loader，对图片格式进行压缩处理。
@@ -96,7 +96,7 @@ plugins: [new MiniCssExtractPlugin()]
 ```
 > 在这里容易犯的小错误的解析后图片获取不到，可能回执publicPath配置路径的不对；
 
-#### 安装 cross-env ，设置node环境变量，为兼容windows 平台
+### 安装 cross-env ，设置node环境变量，为兼容windows 平台
 ```js
 npm install -D cross-env 
 
@@ -106,6 +106,27 @@ npm install -D cross-env
     "build": "cross-env NODE_ENV=production webpack --config ./webpack/webpack.prod.config.js"
   },
 ```
+
+### 配置 async await 语法使用
+- 引入@babel/polyfill 为解决语法兼容问题和async使用问题，打包体积直接增加了100kb;
+- 使用  @babel/plugin-transform-runtime、 @babel/runtime 解决async await的处理，增加的打包体积不到20kb。
+exam
+```js
+npm install --save @babel/runtime
+npm install --save-dev @babel/plugin-transform-runtime
+
+// .babelrc
+{
+  "presets": [
+    "@babel/preset-env",
+    "@vue/babel-preset-jsx"
+  ],
+  "plugins": [
+    "@babel/plugin-transform-runtime"
+  ]
+}
+```
+
 
 ### 安装htmlWebpackPlugin，打包出html文件
 ```js
@@ -199,7 +220,7 @@ server.listen(5000, 'localhost', () => {
   },
 ```
 
-### Module Federation
+## Module Federation
 webpack bundle 模块聚合、共享，也是我觉得webpack5最大的特色，提供了微前端的解决方案；
 把多个应用模块最后聚合成一个程序，这些应用模块之间无任何依赖联系，可以单独开发和部署它们，这可以成为微前端。
 [官方示例](https://github.com/module-federation/module-federation-examples)
@@ -225,7 +246,7 @@ webpack bundle 模块聚合、共享，也是我觉得webpack5最大的特色，
 - filename： 暴露的模块文件名称，也可以说是配置打包后单独文件的名称；
 - name： 模块全局唯一名称，对当前模块的标记；
 - exposes：表示导出的模块，可以在别的bundle中引入使用；为了兼容一些版本，建议名称写成文件路径形式字符串；
-- shared： 共享模块队列，配置此参数后，也会把配置的模块打包出单独文件；
+- shared： 共享模块队列，配置此参数后，也会把配置的模块打包出单独文件；[shared 配置参数文档](https://github.com/webpack/webpack/pull/10960)
 - library: 声明一个挂载在全局下的变量名，默认为当前name的名称，可以更改全局的名称；
 - remotes：作为引用方最关键的配置项，用于声明需要引用的远程资源包的名称与模块名称；
 
@@ -268,12 +289,14 @@ webpack bundle 模块聚合、共享，也是我觉得webpack5最大的特色，
 ```
 > 以上一般普通的项目使用这样的配置就可以实现公共模块包括公共组件、UI、类库等共享，及node_modules 模块的共享，这样既保证公共模块的一致性，也减少了代码复用性和bundle的体积。
 
-#### 微服务架构实现
+### 微服务架构实现
 在我们想实现微服务统筹子模块集合，为避免远程模块重复调用，又要保证公共模块的一致性，需要想出一个思路去解决这样的问题；最初想到的是通过dns引入公共js解决问题，但我们还是想尝试使用 federation的配置去实现。
 
 在查看官方 [module-fedration example](https://github.com/module-federation/module-federation-examples),看到 ModuleFederationPlugin 下remotes参数还可以配置 相对路径和全局变量，如何这样可以成功的话，那么主项目，配置后部署后，引入子项目路由后的js,或者动态配置路由指向子项目的bundle 主js，remotes暴露出全局变量映射出公共代码库和node_modules的shared，这样每个路由对应的子项目都是远程加载，主项目占据顶端渲染，完成微服务架构的一次循环。
 
 > 思路：首先我们要确保 node_modules 中 vue公共模块是通过shared配置达成公用一致目标，和exposes 共享的公共模块也要一致性，即便是在后期合并主项目和子项目的时候；其次路由配置也要放到主项目中去，路由要统一管理配置，在主项目暴露出路由实例，通过addRoutes去配置加载子项目中的路由；剩下需要去配置vue实例，使得主项目和子项目路由内容确保在一个SPA中。
+
+项目demo参考，分支game 为主项目，导出公共js，分支game-child1为子项目引入主项目公共包。[github wbepack5-vue](https://github.com/Shenxiaoy/webpack5-vue/tree/game)
 
 ##### 主项目相关配置示例
 ```js
@@ -349,7 +372,9 @@ import routes from './router'  // 子项目相关路由配置
 stock_m.renderDom(routes)
 
 ```
-> 把各个子项目bundle后的入口js 通过script插入，就可以实现SPA加载主项目和子项目的页面，而vue commont.js共享一份。
+把各个子项目bundle后的入口js 通过script插入，就可以实现SPA加载主项目和子项目的页面，而vue commont.js共享一份。
+
+报错：<code>Container initialization failed as it has already been initialized with a different share scope</code>，提示在共享模块中不能引入shared的公共模块，否则会导致初始化失败；我的解决方案是不再使用暴露的全局变量去引用exposes的入口参数，而是通过import远程引入exposes获取暴露的模块。
 
 
 
