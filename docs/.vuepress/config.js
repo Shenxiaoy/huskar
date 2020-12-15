@@ -2,14 +2,14 @@ module.exports = {
   title: '笔记┉▓',
   description: '前端笔记 JavaScript css',
   head: [
-    ['link', {rel: 'icon', href: '/bike.png'}]
+    ['link', { rel: 'icon', href: '/bike.png' }]
   ],
   base: '/doc/',
   themeConfig: {
     nav: [
-      {text: 'guide', link: '/guide/'},
-      {text: 'js关联', link: '/hjs/'},
-      {text: 'css关联', link: '/hcss/'}
+      { text: 'guide', link: '/guide/' },
+      { text: 'js关联', link: '/hjs/' },
+      { text: 'css关联', link: '/hcss/' }
     ],
     sidebar: {
       '/guide/': [
@@ -98,6 +98,10 @@ module.exports = {
             {
               title: '公式',
               path: '/hjs/notes/math/formula'
+            },
+            {
+              title: '动效动画',
+              path: '/hjs/animation/'
             }
           ]
         }
