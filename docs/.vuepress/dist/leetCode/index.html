@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>最长上升子序列 | 笔记┉▓</title>
+    <meta name="generator" content="VuePress 1.5.2">
+    <link rel="icon" href="/doc/bike.png">
+    <meta name="description" content="前端笔记 JavaScript css">
+    <link rel="preload" href="/doc/assets/css/0.styles.97efef16.css" as="style"><link rel="preload" href="/doc/assets/js/app.ac02b8cd.js" as="script"><link rel="preload" href="/doc/assets/js/2.7407dee7.js" as="script"><link rel="preload" href="/doc/assets/js/35.3249a797.js" as="script"><link rel="prefetch" href="/doc/assets/js/10.5b9e2421.js"><link rel="prefetch" href="/doc/assets/js/11.dc75d4d1.js"><link rel="prefetch" href="/doc/assets/js/12.a79133c5.js"><link rel="prefetch" href="/doc/assets/js/13.18978eac.js"><link rel="prefetch" href="/doc/assets/js/14.39e06f1b.js"><link rel="prefetch" href="/doc/assets/js/15.771db4bc.js"><link rel="prefetch" href="/doc/assets/js/16.14a0c872.js"><link rel="prefetch" href="/doc/assets/js/17.f8e48a6f.js"><link rel="prefetch" href="/doc/assets/js/18.cd4bde6d.js"><link rel="prefetch" href="/doc/assets/js/19.bcc51cfc.js"><link rel="prefetch" href="/doc/assets/js/20.fd70cd96.js"><link rel="prefetch" href="/doc/assets/js/21.46916622.js"><link rel="prefetch" href="/doc/assets/js/22.bac71780.js"><link rel="prefetch" href="/doc/assets/js/23.974bb18d.js"><link rel="prefetch" href="/doc/assets/js/24.4a31904b.js"><link rel="prefetch" href="/doc/assets/js/25.df151707.js"><link rel="prefetch" href="/doc/assets/js/26.fa3a439b.js"><link rel="prefetch" href="/doc/assets/js/27.de9a592c.js"><link rel="prefetch" href="/doc/assets/js/28.725ac6cb.js"><link rel="prefetch" href="/doc/assets/js/29.991a93ff.js"><link rel="prefetch" href="/doc/assets/js/3.11d980bd.js"><link rel="prefetch" href="/doc/assets/js/30.b4467d6e.js"><link rel="prefetch" href="/doc/assets/js/31.0283b6d4.js"><link rel="prefetch" href="/doc/assets/js/32.b8d10ed9.js"><link rel="prefetch" href="/doc/assets/js/33.14ccca4c.js"><link rel="prefetch" href="/doc/assets/js/34.af0cb72b.js"><link rel="prefetch" href="/doc/assets/js/4.5cbaf6ca.js"><link rel="prefetch" href="/doc/assets/js/5.cdfb97e6.js"><link rel="prefetch" href="/doc/assets/js/6.b1b66936.js"><link rel="prefetch" href="/doc/assets/js/7.db8d134e.js"><link rel="prefetch" href="/doc/assets/js/8.f5efcb69.js"><link rel="prefetch" href="/doc/assets/js/9.ee9fafea.js">
+    <link rel="stylesheet" href="/doc/assets/css/0.styles.97efef16.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/doc/" class="home-link router-link-active"><!----> <span class="site-name">笔记┉▓</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/doc/guide/" class="nav-link">
+  guide
+</a></div><div class="nav-item"><a href="/doc/hjs/" class="nav-link">
+  js关联
+</a></div><div class="nav-item"><a href="/doc/hcss/" class="nav-link">
+  css关联
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/doc/guide/" class="nav-link">
+  guide
+</a></div><div class="nav-item"><a href="/doc/hjs/" class="nav-link">
+  js关联
+</a></div><div class="nav-item"><a href="/doc/hcss/" class="nav-link">
+  css关联
+</a></div> <!----></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h3 id="最长上升子序列"><a href="#最长上升子序列" class="header-anchor">#</a> 最长上升子序列</h3> <p>上升子序列指的是对于任意的i &lt; j都满足ai &lt; aj的子序列，该问题被称为最长上升子序列</p> <p>举个栗子：给你一个序列为（1，5 ，2，6，9，10，3，15），那么它的最长上升子序列为：（1，2，6，9，10，15）</p> <h3 id="dp-动态规划"><a href="#dp-动态规划" class="header-anchor">#</a> DP 动态规划</h3> <p>动态规划算法是通过拆分问题，定义问题状态和状态之间的关系，使得问题能够以递推（或者说分治）的方式去解决。</p> <p>由于动态规划解决的问题多数有重叠子问题这个特点，为减少重复计算，对每一个子问题只解一次，将其不同阶段的不同状态保存在一个二维数组中。</p> <p>动态规划解决方案从底部开始解决问题， 将所有小问题解决掉， 然后合并成一个整体解决方案， 从而解决掉整个大问题 。</p></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/doc/assets/js/app.ac02b8cd.js" defer></script><script src="/doc/assets/js/2.7407dee7.js" defer></script><script src="/doc/assets/js/35.3249a797.js" defer></script>
+  </body>
+</html>
