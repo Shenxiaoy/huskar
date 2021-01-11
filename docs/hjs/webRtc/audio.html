@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="摘自于：https://www.sohu.com/a/251826391_647584">
+  <title>audio</title>
+</head>
+
+<body>
+  <div>
+    <button onclick="record()">start</button>
+    <button>end</button>
+  </div>
+  <script>
+    function record() {
+      window.navigator.mediaDevices.getUserMedia({
+        audio: true
+      }).then(mediaStream => {
+        console.log(mediaStream, 'start')
+      }).catch(err => {
+        console.error(err, 'catch-error')
+      })
+    }
+    function createJSNode(audioContext) {
+      const Buffer_size = 4096
+      const Input_channel_count = 2
+      const Output_channel_count = 2
+      let creator = audioContext.createScriptProcessor || audioContext.createJavaScriptNode
+      creator = creator.bind(audioContext)
+      return creator(Buffer_size, Input_channel_count, Output_channel_count)
+    }
+
+    function onAudioProcess(event) {
+      let audioBuffer = event.inputBuffer
+      let leftChannelData = audioBuffer.getchannelData(0),
+        rightChanelData = audioBuffer.getChannelData(1)
+      console.log('left-right')
+    }
+
+    function beginRecord(mediaDevices) {
+      let audioContext = new (window.AudioContext || window.webkitAudioContext)
+      let mediaNode = audioContext.createMediaStreamSource(mediaStream)
+      let jsNode = createJSNode(audioContext)
+      jsNode.connect(audioContext.destination)
+      jsNode.onaudioprocess = onAudioProccess
+      mediaNode.connect(jsNode)
+    }
+
+  </script>
+</body>
+
+</html>

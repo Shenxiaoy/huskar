@@ -4,16 +4,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>dispatchEvent</title>
 </head>
 
 <body>
-  <div>test</div>
-  <script src="test.js"></script>
-  <script src="test1.js"></script>
+  <div>
+    <p id='title'>dispatchEvent</p>
+    <button onclick="handleclick()">点击（console）</button>
+    <hr>
+    <p></p>
+  </div>
   <script>
-    a.count = 3
-    console.log(a, b, 'gggg')
+
+    var event = document.createEvent('Events')
+    event.initEvent('build', false, false)
+    var dbox = document.createElement('div')
+    dbox.addEventListener('build', function (e) {
+      console.log(e, 'title')
+    })
+    function handleclick(e) {
+      console.log('2111')
+      dbox.dispatchEvent(event)
+    }
   </script>
 </body>
 
