@@ -139,6 +139,13 @@ module.exports = {
             }
           ]
         }
+      ],
+      '/webpack/': [
+        {
+          title: 'webpack5',
+          collapsable: false,
+          path: '/webpack/webpack5'
+        }
       ]
     }
   }

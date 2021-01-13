@@ -164,7 +164,7 @@ const {CleanWebpackPlugin } = require('clean-webpack-plugin')
   ]
 ```
 
-### 本地服务开发环境配置
+## 本地服务开发环境的几种配置
 [查看文档](https://webpack.docschina.org/guides/development/)
 1) 可以用webpack-dev-server开箱即用，配置到devServer配置项，在package.json 中运行 webpack-dev-server命令执行webpack配置文件；
 ```js
@@ -378,12 +378,12 @@ stock_m.renderDom(routes)
 
 
 
-### 配置解析vue
+## 配置解析vue
 - 安装 vue vue-loader vue-template-compiler 插件
 - rules中加入vue解析配置，{test: /\.vue$/, loader: 'vue-loader'}
 - 引入vueloader插件：const VueLoaderPlugin = require('vue-loader/lib/plugin')  ；new VueLoaderPlugin();
 
-### eslint
+## eslint
 可选规范有'eslint-config-google''、'airbnb-base'、‘standard'(前端标准)，我们一般选择 <code>standard</code>;
 - vue eslint [官方文档](https://eslint.vuejs.org/)
 - eslint 配置项、配置参数：[参考文章](https://blog.csdn.net/qq_41257129/article/details/104839746)
