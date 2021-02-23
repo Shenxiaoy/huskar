@@ -290,7 +290,7 @@ webpack bundle 模块聚合、共享，也是我觉得webpack5最大的特色，
 > 以上一般普通的项目使用这样的配置就可以实现公共模块包括公共组件、UI、类库等共享，及node_modules 模块的共享，这样既保证公共模块的一致性，也减少了代码复用性和bundle的体积。
 
 ### 微服务架构实现
-在我们想实现微服务统筹子模块集合，为避免远程模块重复调用，又要保证公共模块的一致性，需要想出一个思路去解决这样的问题；最初想到的是通过dns引入公共js解决问题，但我们还是想尝试使用 federation的配置去实现。
+在我们想实现微服务统筹子模块集合，为避免远程模块重复调用，又要保证公共模块的一致性，需要想出一个思路去解决这样的问题；最初想到的是通过CDN引入公共js解决问题，但我们还是想尝试使用 federation的配置去实现。
 
 在查看官方 [module-fedration example](https://github.com/module-federation/module-federation-examples),看到 ModuleFederationPlugin 下remotes参数还可以配置 相对路径和全局变量，如何这样可以成功的话，那么主项目，配置后部署后，引入子项目路由后的js,或者动态配置路由指向子项目的bundle 主js，remotes暴露出全局变量映射出公共代码库和node_modules的shared，这样每个路由对应的子项目都是远程加载，主项目占据顶端渲染，完成微服务架构的一次循环。
 
@@ -446,10 +446,13 @@ const eslintConfig = {
 plugins: [new ESLintPlugin(eslintConfig)]
 ```
 
+### 编写一个wbepack plugin
+[文档1](https://www.webpackjs.com/contribute/writing-a-plugin/) [文档2](https://mp.weixin.qq.com/s/E1bjaJMC4DAmxfTGyGtXbw)
 
+### 编写一个loader
+[文档1](https://www.webpackjs.com/contribute/writing-a-loader/)
 
-
-
+### 实现一个静态模块打包器
 
 
 

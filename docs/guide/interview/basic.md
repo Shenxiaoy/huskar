@@ -1,6 +1,71 @@
 ### 解构的几种应用
 
+### 图片压缩
+```js
+/**
+ * 
+ * @param {*} url 原图地址
+ * @param {*} directionWidth 目标图片的宽度
+ * @param {*} maxSize 最大尺寸(单位字节)
+ * 函数最后会得到一个宽度固定的图片，通过调节清晰度来实现最终尺寸小于目标尺寸
+ */
+function imageCompressUpload(url, directionWidth, maxSize) {
+  /**
+   * 获取base64文件的length
+   * @param {*} base64 
+   */
+  function getBase64length(base64) {
+    let rawBase64 = base64.substring(22);
+    let equalIndex = rawBase64.indexOf('=');
+    if (equalIndex > 0) {
+      rawBase64 = rawBase64.substring(0, equalIndex);
+    }
+    const rawBase64Length = rawBase64.length;
+    let fileLength = parseInt(rawBase64Length - (rawBase64Length / 8) * 2);
+    return fileLength;
+  }
+  return new Promise(resolve => {
+    const img = new Image();
+    img.setAttribute("crossOrigin", "Anonymous"); // 允许图片使用跨域资源，需要服务端支持
+    img.onload = () => {
+      const width = img.naturalWidth;
+      const height = img.naturalHeight;
+
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      canvas.width = directionWidth;
+      canvas.height = height / width * directionWidth;
+      context.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      let base64 = canvas.toDataURL('image/jpeg');
+      let fileLength = getBase64length(base64);
+      let ratio = 0.85;
+      while (fileLength > maxSize) {
+        base64 = canvas.toDataURL('image/jpeg', ratio);
+        ratio -= 0.05;
+        fileLength = getBase64length(base64);
+      }
+      resolve(base64);
+      // 也可以对base6进行处理，例如转换成Blob然后上传到OSS
+    }
+
+    img.src = url;
+  })
+}
+
+// 调用
+imageCompressUpload(url, 800, 200000).then(base64 => { url = base64});
+```
+
 ### Symbol.interator
+
+### html 角标标签 上标和小标
+```html
+<!-- 上标 -->
+<SUP>2</SUP>
+<!-- 下标 -->
+<SUB>2</SUB>
+```
 
 ### 图片懒加载
 ```js
@@ -73,10 +138,10 @@ const jsonp = ({ url, params, callbackName }) => {
 - 5xx服务器错误——服务器在处理某个正确请求时发生错误
 
 #### 常遇到的状态码情况
-200：服务器成功处理了请求； 204：请求成功，只是没有响应数据
-301和302 非常相似，  一个是永久转移，一个是临时转移；304：使用缓存信息资源；
-400：客服端是错误的请求，一般指传递的参数内容有问题；401：未授权，需要认证；403：请求被服务器拒绝；404未找到资源；405：请求方法不对；
-500：服务器发生错误；501：请求与服务器服务不相匹配；502：网关故障；503：服务器目前无法为请求提供服务，但过一段时间就可以恢复服务；504： 超时；505：不支持的http版本；
+- 200：服务器成功处理了请求； 204：请求成功，只是没有响应数据
+- 301和302 非常相似，  一个是永久转移，一个是临时转移；304：使用缓存信息资源；
+- 400：客服端是错误的请求，一般指传递的参数内容有问题；401：未授权，需要认证；403：请求被服务器拒绝；404未找到资源；405：请求方法不对；
+- 500：服务器发生错误；501：请求与服务器服务不相匹配；502：网关故障；503：服务器目前无法为请求提供服务，但过一段时间就可以恢复服务，表示服务器繁忙；504： 超时；505：不支持的http版本；
 
 ### 浏览器缓存
 1) 强制缓存
@@ -118,7 +183,12 @@ ETag 属性之间的比较采用的是弱比较算法，即两个文件除了每
 
 - no-store表示的是禁止缓存，即每一次都是直接与原服务器进行通信，从原服务器返回资源。一般设置了no-store的资源，都暗示着该资源具有敏感性信息。
 
-
+### http2和http1.1的主要区别
+1) 采用二进制进行传输 vs 采用文本进行传输；
+2) 头部信心进行压缩 vs 都不信息未压缩，采用文本格式；
+3) 单个链接可以发送多个请求和响应 vs 单个链接只能发送一个请求和响应；
+4) 支持服务器推送 vs 不支持服务器推送；
+5) 多路复用 vs 否；
 
 ### 箭头函数与普通函数的区别
 1) 箭头函数不会创建this，内部this指向当前所在的全局作用域；
