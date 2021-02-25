@@ -1,4 +1,13 @@
 # 随记
+
+
+### 实现web端自定义截屏
+[参考](https://juejin.cn/post/6924368956950052877)
+
+## 大文件断点续传
+思路：前端使用blob.slcie 切割文件成数组片段，片段包括文件片段内容和序号，然后使用Promise.all()http并发上传；服务端接收文件片段根据序号进行合并。
+[参考](https://mp.weixin.qq.com/s/dU7AU3SXJo1nYcA1DH-6Dg)
+
 ## 复制粘贴
 - clipboard.js  || 引用外部插件
 - document.execCommand()

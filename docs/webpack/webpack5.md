@@ -454,6 +454,118 @@ plugins: [new ESLintPlugin(eslintConfig)]
 
 ### 实现一个静态模块打包器
 
+### dllPlugin
+1) webpack.DllPlugin 抽离公共模块为单独js加载，为后续可能cdn抽离公共模块；
+2) 使用webpack插件 webpack.DllReferencePlugin 进行关联，公共模块不加入build包中
+
+###   optimization 优化打包策略
+1) splitChunks 
+2) 根据不同的策略来分割打包出来的bundle。
+```js
+optimization: {
+    splitChunks: {
+      cacheGroups: {
+        common: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'common',
+          chunks: 'initial',
+          priority: 2,
+          minChunks: 2,
+        },
+        // vendor: {
+        //   name: 'vendor',
+        //   chunks: 'initial',
+        //   priority: 10,
+        //   test: /[\\/]node_modules[\\/][(react)|(antd)|(lodash)]/
+        // },
+        // 主要用于抽取出一个css文件
+        // styles: {
+        //   name: 'styles',
+        //   test: /\.less$/,
+        //   chunks: 'all',
+        //   enforce: true,
+        //   priority: 20,
+        // }
+      }
+    }
+  }
+```
+2) minimizer 压缩js代码
+```js
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+module.exports = {
+  optimization: {
+    minimizer: [
+      // 自定义js优化配置，将会覆盖默认配置
+      new UglifyJsPlugin({
+        exclude: /\.min\.js$/, // 过滤掉以".min.js"结尾的文件，我们认为这个后缀本身就是已经压缩好的代码，没必要进行二次压缩
+        cache: true,
+        parallel: true, // 开启并行压缩，充分利用cpu
+        sourceMap: false,
+        extractComments: false, // 移除注释
+        uglifyOptions: {
+          compress: {
+            unused: true,
+            warnings: false,
+            drop_debugger: true
+          },
+          output: {
+            comments: false
+          }
+        }
+      }),
+      // 用于优化css文件
+      new OptimizeCssAssetsPlugin({
+        assetNameRegExp: /\.css$/g,
+        cssProcessorOptions: {
+          safe: true,
+          autoprefixer: { disable: true }, 
+          mergeLonghand: false,
+          discardComments: {
+            removeAll: true // 移除注释
+          }
+        },
+        canPrint: true
+      })
+    ]
+  }
+}
+```
+3) runtimeChunk 
+untime相关的代码(各个模块之间的引用和加载的逻辑)内嵌入每个entry,对于一些内容小的chunk.js不需要单独cdn请求。
+
+我们可以配合InlineManifestWebpackPlugin插件将运行代码直接插入html文件中，因为这段代码非常少，这样做可以避免一次请求的开销，
+```js
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+var InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin')
+
+module.exports = {
+  entry: {
+    app: 'src/index.js'
+  },
+  optimization: {
+    runtimeChunk: 'single'
+    // 等价于
+    // runtimeChunk: {
+    //   name: 'runtime'
+    // }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'fle-cli',
+      filename: 'index.html',
+      template: 'xxx',
+      inject: true,
+      chunks: ['runtime', 'app'], // 将runtime插入html中
+      chunksSortMode: 'dependency',
+      minify: {/* */}
+    }),
+    new InlineManifestWebpackPlugin('runtime')
+  ]
+}
+```
+
 
 
 
