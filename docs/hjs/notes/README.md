@@ -29,6 +29,26 @@ const btnCopy = new Clipboard('btn');
 this.copyValue = 'hello world';
 ```
 
+### 事件中进行复制操作
+```js
+export function copy(text, id) {
+  var clipboardData = window.clipboardData;   //IE支持
+  if(!clipboardData) {
+    var textArea = document.createElement('textarea');
+    document.body.appendChild(textArea);
+
+    textArea.value = text;
+    textArea.id = id || 'copytext';
+    textArea.select();
+    document.execCommand('copy');
+    textArea.style.display = 'none';
+    return
+  }
+  clipboardData.setData('text', text)
+}
+```
+> 优化： 通过id去判断是否存在已经插入的 textarea，避免重复插入dom。
+
 ## 网页中文本阅读
 - 浏览器支持（Chrome 33+、Firefox 49+ 或 IE-Edge）
 - api支持 SpeechSynthesisUtterance（用于语音合成）、  SpeechSynthesis（用于朗读）

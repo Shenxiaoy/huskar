@@ -1,4 +1,125 @@
-### 解构的几种应用
+## 继承
+
+### 原型继承
+```js
+function object(o){
+  function F(){}
+  F.prototype = o;
+  return new F();
+}
+------------------------------
+var person = {
+  name : "Van"
+};
+var anotherPerson = Object.create(person, {
+  name : {
+    value : "Louis"
+  }
+});
+alert(anotherPerson.name);//"Louis"
+```
+> 原型式继承中, 包含引用类型值的属性始终都会共享相应的值, 就像使用原型模式一样.
+
+### 原型链继承
+```js
+function Father(){
+  this.property = true;
+}
+Father.prototype.getFatherValue = function(){
+  return this.property;
+}
+function Son(){
+  this.sonProperty = false;
+}
+//继承 Father
+Son.prototype = new Father();//Son.prototype被重写,导致Son.prototype.constructor也一同被重写
+Son.prototype.getSonVaule = function(){
+  return this.sonProperty;
+}
+var instance = new Son();
+alert(instance.getFatherValue());//true  
+```
+> instance实例通过原型链找到了Father原型中的getFatherValue方法.此时instance.constructor指向的是Father,这是因为Son.prototype中的constructor被重写的缘故.
+原型链并非十分完美, 它包含如下两个问题.问题一: 当原型链中包含引用类型值的原型时,该引用类型值会被所有实例共享;问题二: 在创建子类型(例如创建Son的实例)时,不能向超类型(例如Father)的构造函数中传递参数.
+
+### 借用构造函数继承 | call 继承
+```js
+function Father(){
+  this.colors = ["red","blue","green"];
+}
+function Son(){
+  Father.call(this);//继承了Father,且向父类型传递参数
+}
+var instance1 = new Son();
+instance1.colors.push("black");
+console.log(instance1.colors);//"red,blue,green,black"
+
+
+var instance2 = new Son();
+console.log(instance2.colors);//"red,blue,green" 可见引用类型值是独立的
+```
+> 很明显,借用构造函数一举解决了原型链的两大问题:其一, 保证了原型链中引用类型值的独立,不再被所有实例共享;其二, 子类型创建时也能够向父类型传递参数.随之而来的是, 如果仅仅借用构造函数,那么将无法避免构造函数模式存在的问题–方法都在构造函数中定义, 因此函数复用也就不可用了.而且超类型(如Father)中定义的方法,对子类型而言也是不可见的. 考虑此,借用构造函数的技术也很少单独使用.
+
+### 组合继承
+基本思路: 使用原型链实现对原型属性和方法的继承,通过借用构造函数来实现对实例属性的继承.
+```js
+function Father(name){
+  this.name = name;
+  this.colors = ["red","blue","green"];
+}
+Father.prototype.sayName = function(){
+  alert(this.name);
+};
+function Son(name,age){
+  Father.call(this,name);//继承实例属性，第一次调用Father()
+  this.age = age;
+}
+Son.prototype = new Father();//继承父类方法,第二次调用Father()
+Son.prototype.sayAge = function(){
+  alert(this.age);
+}
+var instance1 = new Son("louis",5);
+instance1.colors.push("black");
+console.log(instance1.colors);//"red,blue,green,black"
+instance1.sayName();//louis
+instance1.sayAge();//5
+
+
+var instance1 = new Son("zhai",10);
+console.log(instance1.colors);//"red,blue,green"
+instance1.sayName();//zhai
+instance1.sayAge();//10
+```
+> 组合继承避免了原型链和借用构造函数的缺陷,融合了它们的优点,成为 JavaScript 中最常用的继承模式. 而且, instanceof 和 isPrototypeOf( )也能用于识别基于组合继承创建的对象.
+
+### 寄生式继承
+```js
+function object(o){
+  function F(){}
+  F.prototype = o;
+  return new F();
+}
+
+function createAnother(original){
+  var clone = object(original);//通过调用object函数创建一个新对象
+  clone.sayHi = function(){//以某种方式来增强这个对象
+    alert("hi");
+  };
+  return clone;//返回这个对象
+}
+```
+> 这个例子中的代码基于person返回了一个新对象--anotherPerson. 新对象不仅具有 person 的所有属性和方法, 而且还被增强了, 拥有了sayH()方法.注意: 使用寄生式继承来为对象添加函数, 会由于不能做到函数复用而降低效率;这一点与构造函数模式类似.
+
+### 寄生组合式继承
+```js
+function extend(subClass,superClass){
+  var prototype = object(superClass.prototype);//创建对象
+  prototype.constructor = subClass;//增强对象
+  subClass.prototype = prototype;//指定对象
+}
+```
+> 其背后的基本思路是: 不必为了指定子类型的原型而调用超类型的构造函数
+
 
 ### 图片压缩
 ```js

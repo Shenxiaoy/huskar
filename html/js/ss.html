@@ -1,32 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<h3>获取另一个html文档</h3>
+		<div id="demo"></div>
+		<script>
+			// jq 使用 load() 方法
+			
+			var request;
+			if (window.XMLHttpRequest) {
+				request = new XMLHttpRequest();
+			} else {
+				request = new ActiveXObject('Microsoft.XMLHTTP');
+			}
+			request.responseType = 'document';
+			request.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var ajaxHtml = this.responseXML;
+					// var childs = Object.assign([], ajaxHtml.body.childNodes);
+					var childs = [].slice.call(ajaxHtml.body.childNodes);
+					for	(var i = 0; i < childs.length; i++) {
+						document.querySelector('#demo').appendChild(childs[i]);
+					}
+					// console.log(this.responseXML);
+				}
+			}
+			request.open('GET','http://desc.gome.com.cn/html/prodhtml/goodsDesc/descHtml/201904/desc0417-1/1130020153_mobile.html',true);
+			request.send(null);
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>dispatchEvent</title>
-</head>
-
-<body>
-  <div>
-    <p id='title'>dispatchEvent</p>
-    <button onclick="handleclick()">点击（console）</button>
-    <hr>
-    <p>222<SUP>2</SUP><SUB>44</SUB></p>
-  </div>
-  <script>
-
-    var event = document.createEvent('Events')
-    event.initEvent('build', false, false)
-    var dbox = document.createElement('div')
-    dbox.addEventListener('build', function (e) {
-      console.log(e, 'title')
-    })
-    function handleclick(e) {
-      console.log('2111')
-      dbox.dispatchEvent(event)
-    }
-  </script>
-</body>
-
+			//释放内存，销毁script
+			document.body.removeChild(document.body.lastChild);
+		</script>
+	</body>
 </html>
