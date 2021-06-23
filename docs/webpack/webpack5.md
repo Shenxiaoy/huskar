@@ -1,13 +1,14 @@
 # webpack5
 [官方文档](https://webpack.docschina.org/concepts/)
 
+## 项目配置
 ### 首先安装 webpack webpack-cli 插件
 ```js
 npm install webpack webpack-cli -D
 ```
 > 最新版本webpack-cli可能会与webpack-dev-server 4 不兼容，不能配置其命令；
 
-## webpack 打包方式
+### webpack 打包方式
 1) 通过在package.json script中配置 webpack需要运行的配置文件；
 ```js
  "scripts": {
@@ -125,43 +126,6 @@ npm install --save-dev @babel/plugin-transform-runtime
     "@babel/plugin-transform-runtime"
   ]
 }
-```
-
-
-### 安装htmlWebpackPlugin，打包出html文件
-```js
-npm install -D html-webpack-plugin
-
-// 初级配置
-  plugins: [
-    new htmlWebpackPlugin({
-      fileName: 'index.html',
-      template: 'public/index.html',
-      inject: 'body',
-      title: 'webpack5 config',
-      minify: {
-        removeComments: true,  // 去掉注释
-        collapseWhitespace: true  // 去掉空格
-      }
-    })
-  ],
-```
-
-### 合并webpack对象和清空之前打包内容
-```js
-npm install webpack-merge clean-webpack-plugin -D
----------
-const {merge} = require('webpack-merge')
-module.exports = merge(common, {
-  mode: 'development',
-  output: {
-    filename: 'js/[name].[hash:8].bundle.js',
-  },
---------------
-const {CleanWebpackPlugin } = require('clean-webpack-plugin')
-  plugins: [
-    new CleanWebpackPlugin()
-  ]
 ```
 
 ## 本地服务开发环境的几种配置
@@ -446,6 +410,44 @@ const eslintConfig = {
 plugins: [new ESLintPlugin(eslintConfig)]
 ```
 
+## 插件
+
+### 安装htmlWebpackPlugin，打包出html文件
+```js
+npm install -D html-webpack-plugin
+
+// 初级配置
+  plugins: [
+    new htmlWebpackPlugin({
+      fileName: 'index.html',
+      template: 'public/index.html',
+      inject: 'body',
+      title: 'webpack5 config',
+      minify: {
+        removeComments: true,  // 去掉注释
+        collapseWhitespace: true  // 去掉空格
+      }
+    })
+  ],
+```
+
+### 合并webpack对象和清空之前打包内容
+```js
+npm install webpack-merge clean-webpack-plugin -D
+---------
+const {merge} = require('webpack-merge')
+module.exports = merge(common, {
+  mode: 'development',
+  output: {
+    filename: 'js/[name].[hash:8].bundle.js',
+  },
+--------------
+const {CleanWebpackPlugin } = require('clean-webpack-plugin')
+  plugins: [
+    new CleanWebpackPlugin()
+  ]
+```
+
 ### 编写一个wbepack plugin
 [文档1](https://www.webpackjs.com/contribute/writing-a-plugin/) [文档2](https://mp.weixin.qq.com/s/E1bjaJMC4DAmxfTGyGtXbw)
 
@@ -457,6 +459,48 @@ plugins: [new ESLintPlugin(eslintConfig)]
 ### dllPlugin
 1) webpack.DllPlugin 抽离公共模块为单独js加载，为后续可能cdn抽离公共模块；
 2) 使用webpack插件 webpack.DllReferencePlugin 进行关联，公共模块不加入build包中
+```js
+// 抽离公共模块打包出vendorjs和mainfest.json映射文件
+const webpack = require('webpack')
+const path = require('path')
+
+const vendors = [
+    'react',
+    'react-dom',
+    // 'react-router',
+    // 'react-redux',
+    // 'lodash',
+    // 'redux',
+    'antd'
+]
+
+module.exports = {
+  output: {
+      path: path.join(path.resolve(), 'src/assets/libs'),
+      filename: '[name].js',
+      library: '[name]',
+  },
+  entry: {
+      vendor: vendors
+  },
+  plugins: [
+      new webpack.DllPlugin({
+          path: path.join(path.resolve(), 'manifest.json'),
+          name: '[name]',
+          context: __dirname,
+      }),
+  ]
+}
+
+// 配置映射文件到webpack项目配置中国
+  plugins: [
+      new webpack.DllReferencePlugin({
+          manifest: require('../../../manifest.json')
+      }),
+      ...
+
+
+```
 
 ###   optimization 优化打包策略
 1) splitChunks 
@@ -490,6 +534,15 @@ optimization: {
     }
   }
 ```
+- chunks: all/表示所有依赖的 node_modules都会被打包到 vendors.js 中; initial; async;
+- automaticNameDelimiter: 表示生成的分离js名称分隔符 如 vendor~blog.js
+- minSize: 表示抽取出来的文件在压缩前最小值限制，默认为30000字节
+- maxSize: 表示抽取出来的文件在压缩前最大值限制，默认为 0，表示不限制最大大小；
+- maxAsyncRequests: 最大的按需(异步)加载次数，默认为 5
+- maxInitialRequests：最大的初始化加载次数，默认为 3；
+- name: 抽取出来文件的名字，默认为 true，表示自动生成文件名；默认为vendor
+- cacheGroups: 缓存组，在这里可以自定义 需要把哪种类型、路径上的依赖进行打包
+
 2) minimizer 压缩js代码
 ```js
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin')

@@ -9,3 +9,19 @@ Object.assign([1,2,3], [4,5])
 
 result: [4,5,3]
 ```
+
+## Object.freeze 冻结
+可以冻结一个对象，一个被冻结的对象再也不能被修改。
+```js
+const obj = {
+  prop: 42
+};
+
+Object.freeze(obj);
+
+obj.prop = 33;
+// Throws an error in strict mode
+
+console.log(obj.prop);
+// expected output: 42
+```

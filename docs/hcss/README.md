@@ -1,5 +1,24 @@
 # css 基础
 
+### contain 该属性允许我们指定特定的DOM元素和它的子元素，让它们能够独立于整个DOM树结构之外。
+- layout ：该值表示元素的内部布局不受外部的任何影响，同时该元素以及其内容也不会影响以上级；告诉浏览器，容器的后代不应该导致其容器外元素的布局改变，反之亦然
+- paint ：该值表示元素的子级不能在该元素的范围外显示，该元素不会有任何内容溢出（或者即使溢出了，也不会被显示）；告诉浏览器，容器的内容将永远不会绘制超出容器的尺寸，如果容器是模糊的，那么就根本不会绘制内容
+- size ：该值表示元素盒子的大小是独立于其内容，也就是说在计算该元素盒子大小的时候是会忽略其子元素；告诉浏览器，当其内容发生变化时，该容器不应导致页面上的位置移动
+- content ：该值是contain: layout paint的简写
+- strict ：该值是contain: layout paint size的简写
+
+### content-visibility 跳过屏幕外的内容渲染
+对页面上每项内容标签添加 <code>content-visibility</code> css属性，对于当前可视区外的标签元素，允许我们推迟我们选择的HTML元素渲染。
+```css
+.card {
+    content-visibility: auto;
+    contain-intrinsic-size: 200px;
+}
+```
+- contain-intrinsic-size作为一个占位符尺寸来替代渲染内容。
+
+### 
+
 ### user-select 禁用选择文本
 ```css
 #user-select {
@@ -275,6 +294,7 @@ div{
   will-change: transform;
 }
 ```
+> 使用will-change表示该元素在未来会发生变化。
 
 ### 滚动条平滑滚动 scroll-behavior
 css3 新特性，不用在用js去实现了
