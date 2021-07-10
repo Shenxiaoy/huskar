@@ -1,5 +1,5 @@
 module.exports = {
-  title: '笔记┉▓',
+  title: '小记',
   description: '前端笔记 JavaScript css',
   head: [
     ['link', { rel: 'icon', href: '/bike.png' }]
@@ -26,13 +26,17 @@ module.exports = {
               path: '/guide/performance/'
             },
             {
+              title: '基础',
+              path: '/guide/work/basic'
+            },
+            {
+              title: 'vue3',
+              path: '/guide/work/vue'
+            },
+            {
               title: 'node应用',
               path: '/guide/node/'
             },
-            {
-              title: 'interview',
-              path: '/guide/interview/basic'
-            }
           ]
         },
         {

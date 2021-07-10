@@ -1,8 +1,52 @@
 ### 哈斯卡
 :tada: :100: :stuck_out_tongue:
 
-2021-7-10
-### vscode 插件开发
-参考文档
-- [文档1](https://zhuanlan.zhihu.com/p/99198980)
-- [文档2](https://code.visualstudio.com/api/get-started/your-first-extension)
+- [vscode 插件开发](https://code.visualstudio.com/api/get-started/your-first-extension)
+- [鸿蒙系统js开发文档](https://developer.harmonyos.com/cn/docs/documentation/js-framework-file-0000000000611396)
+- [标准图片、渐进式图片](https://segmentfault.com/a/1190000019231550)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------
+
