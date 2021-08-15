@@ -3,7 +3,7 @@
 
 ### webpack5从0搭建项目 [传送门](/webpack/webpack5.md)
 
-### [vue3 特性](http://www.shenxiaoyu.cn/doc/guide/interview/vue.html)
+### [vue3 特性](/guide/interview/vue.html)
 <zhizhizhi>bvbvb</zhizhizhi>
 
 > 1. sss

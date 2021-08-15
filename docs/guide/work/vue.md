@@ -212,6 +212,10 @@ diff算法核心也就是真正发挥作用的地方是在新旧VNode有多个ch
 
 ### ref
 
+### toRef
+
+### toRefs
+
 ### effect
 effect 的作用主要是在响应式数据处理的过程进行依赖的收集，然后在数据更新的时候触发依赖。
 - effect对入参fn进行属性添加等改造后生成依赖项，存入依赖队列中，在set后对依赖的队列进行遍历执行。
@@ -228,3 +232,96 @@ effect 的作用主要是在响应式数据处理的过程进行依赖的收集�
 ### computed
 1) 在computed上定义了一个get方法，返回的value值则是 effect副作用的调用。对effect options传入了 两个参数，一个是lazy：true，表示懒加载，不立即执行其副作用依赖；另一个参数为scheduler回调，回调中会把dirty 赋值为true；在响应数据set的时候，会调用scheduler，这样就会重新调用effect依赖，进行重新计算；不过没有响应数据set，那么还是取缓存的值。之所以感觉到比较绕，是computed是使用effec做响应处理，为达到目的，通过配置参数兼容整个effect去实现。
 2) 其中涉及到的一些细节，比如在通过dirty判断是否重新计算时，在get回调和scheduler中，又调用了track和trigger，这样减少了对应的依赖获取 判断的步骤。
+
+### watch
+
+### watchEffect
+
+
+
+#### 自定义 loader 用户实现css隔离
+项目中新建一个loader.js，例如下面例子在根目录中新建 <code>preloader.js</code>
+```js
+const getOptions = require("loader-utils").getOptions
+module.exports = function loader(source) {
+  const options = getOptions(this)
+  console.log(options, "start")  // options 则是在此loader下配置参数
+  return source
+}
+
+```
+
+在vue/cli 配置中引入自定义的loader，目的是匹配所有的src/下所有 .vue文件,并把style 中的样式类名统一添加前缀
+```js
+  chainWebpack: config => {
+    config.module
+      .rule("vue")
+      .test(/\.vue$/)
+      .use("vue-loader")
+      .loader("vue-loader")
+      .end()
+      .use(path.resolve("./preloader.js"))
+      .loader(path.resolve("./preloader.js"))
+      .end()
+    config.resolve.alias
+      .set("@", resolve("./src"))
+      .set("API", resolve("./src/api/index.js"))
+  },
+```
+##### 使用 loader-utils 获取loader的配置项，进行动态loader配置化
+```js
+// vue.cofig.js
+...
+...
+.use(path.resolve("./preloader.js"))
+.tap(() => {
+  return { type: 333 }
+})
+.loader(path.resolve("./preloader.js"))
+.end()
+
+```
+- [参考文档](https://www.webpackjs.com/contribute/writing-a-loader/)
+
+##### 插件
+- https://www.webpackjs.com/api/plugins/#tapable
+
+
+### 添加jest单元测试
+> 参考 vue test utils [官方文档](https://vue-test-utils.vuejs.org/zh/api/wrapper/#emittedbyorder)
+
+一个vue组件的单元测试例子
+```js
+/**
+ * @ shallowMount : 只考虑组件本身元素的渲染，不包括子组件的渲染；
+ * @ mount：与 shallowMount相反，会渲染包括子组件深度渲染解析到html文档元素上
+ */
+import { shallowMount, mount, createLocalVue } from "@vue/test-utils"
+import Search from "@/components/pageModule/search/index.vue"
+import Router from "vue-router"
+import ElementUI from "element-ui"
+const localVue = createLocalVue()
+localVue.use(Router)
+localVue.use(ElementUI)
+
+const searchForm1 = {
+  gInput: {
+    name: "输入框",
+    widget: "g-input"
+  }
+}
+describe("pageModule search of module", () => {
+  it("配置的查询表单组件是否加载成功", () => {
+    const wrapper = mount(Search, {
+      propsData: { searchForm: searchForm1 },
+      localVue
+    })
+    // expect(wrapper.exists()).toBe(true)
+    const dom = wrapper.find("input")
+    expect(dom.classes()).toContain("el-input__inner")
+  })
+})
+
+```
+
+

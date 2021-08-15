@@ -57,8 +57,7 @@ compiler.run((err, stats) => {
   ]
 }
 ```
-### 对css样式的loader处理
-安装：
+### 单独提取 css
 ```js
 npm install css-loader mini-css-extract-plugin -D
 ```
@@ -447,6 +446,39 @@ const {CleanWebpackPlugin } = require('clean-webpack-plugin')
     new CleanWebpackPlugin()
   ]
 ```
+
+#### 打包速度分析插件
+<code>speed-measure-webpack5-plugin</code>
+
+#### 文件体积监控 插件
+<code>webpack-bundle-analyzer</code>
+
+#### 提升打包速度
+- <code>thread-loader</code>：开启多线程池，配置babel自动缓存；
+- <code>cache-loader</code>：在一些性能开销大的 loader 之前添加此 loader, 可以将结果缓存在磁盘中
+- webpack5 内置优化了模板缓存；
+
+#### 压缩
+- <code>optimize-css-assets-webpack-plugin</code> 是一个优化和压缩 css 资源的插件
+- terser-webpack-plugin 是一个优化和压缩 js 资源的插件
+- image-webpack-loader 可以帮助我们对图片进行压缩和优化
+
+### 清除用不到的css
+<code>purgecss-webpack-plugin</code>
+
+### 设置全局变量
+<code>DefinePlugin</code>
+```js
+ // 定义全局变量 修改process.env.NODE_ENV
+ plugins: [
+     new webpack.DefinePlugin({
+	    'process.env.NODE_ENV': JSON.stringify('production'),
+	    ENV: JSON.stringify('ENV')
+	})
+]
+```
+
+
 
 ### 编写一个wbepack plugin
 [文档1](https://www.webpackjs.com/contribute/writing-a-plugin/) [文档2](https://mp.weixin.qq.com/s/E1bjaJMC4DAmxfTGyGtXbw)
